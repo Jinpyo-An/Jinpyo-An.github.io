@@ -26,7 +26,7 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 ## Content 작성 규칙
 
-`src/content/projects/`에 폴더를 만들고 `index.md`를 작성하면 자동으로 홈 화면/사이드바에 노출된다 (자세한 내용은 README.md 참고).
+`src/content/projects/`에 폴더를 만들고 `index.md`를 작성하면 자동으로 홈 화면/사이드바에 노출된다.
 
 - frontmatter: `title`, `period`, `summary`, `techStack`, `order`, 선택적 `githubUrl` / `demoUrl`
 - 본문: `## ` 헤딩으로 "문제 정의 → 해결 방안 비교 및 선택 이유 → 문제 해결 과정 → 결과" 4단계 구조를 따른다
@@ -49,4 +49,4 @@ Consult these guides before working on related tasks:
 
 - Astro 7+("Sätteri" 프로세서)에서 `markdown.remarkPlugins`/`rehypePlugins`는 top-level에서 deprecated. `npm install @astrojs/markdown-remark` 후 `markdown.processor: unified({ remarkPlugins: [...] })`로 설정할 것.
 - Content collection은 Content Layer `glob` 로더(`astro/loaders`)를 `src/content.config.ts`에서 사용 (legacy `type: 'content'` 아님) — 새 컬렉션도 동일 패턴 유지.
-- 디자인 시스템(`src/styles/global.css`의 색상 hex값, spacing, 인쇄 스타일)은 참고한 외부 사이트의 값을 사용자 요청에 따라 리터럴하게 동일하게 맞춘 의도적 결정 (2026-08-09). 임의로 "정리"하거나 값을 바꾸지 말 것 — 콘텐츠(이력서 텍스트, 이미지)는 재사용하지 않는다. 자세한 내용은 README.md "디자인 시스템" 섹션 참고.
+- 디자인 시스템(`src/styles/global.css`의 색상 hex값, spacing, 인쇄 스타일)은 참고한 외부 사이트의 값을 사용자 요청에 따라 리터럴하게 동일하게 맞춘 의도적 결정 (2026-08-09). 임의로 "정리"하거나 값을 바꾸지 말 것 — 콘텐츠(이력서 텍스트, 이미지)는 재사용하지 않는다.
