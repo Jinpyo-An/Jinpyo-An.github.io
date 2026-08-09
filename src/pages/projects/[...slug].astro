@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import { profile } from '../../data/profile';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -12,28 +13,43 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
+const printName = `${profile.name}_${project.data.title}`;
 ---
 
-<Base title={`${project.data.title} — 프로젝트`} description={project.data.summary}>
-  <a href="/" class="text-sm text-ink-subtle hover:text-accent">← 목록으로</a>
-
-  <header class="mt-4 mb-8">
-    <h1 class="text-2xl font-bold text-ink">{project.data.title}</h1>
-    <p class="mt-1 text-sm text-ink-subtle">{project.data.period}</p>
-    <ul class="mt-3 flex flex-wrap gap-1.5">
-      {project.data.techStack.map((tech) => <li class="tag">{tech}</li>)}
-    </ul>
-    <div class="mt-3 flex gap-4 text-sm">
+<Base title={`${project.data.title} — 프로젝트`} description={project.data.summary} printName={printName}>
+  <header class="mb-10">
+    <p class="text-[13px] text-[var(--color-ink-subtle)] mb-2">
+      {project.data.period}
+      {
+        project.data.techStack.length > 0 && (
+          <span class="ml-2 font-mono">· {project.data.techStack.join(' · ')}</span>
+        )
+      }
+    </p>
+    <h1 class="text-[30px] md:text-[34px] font-bold leading-[1.25] tracking-tight mb-3">
+      {project.data.title}
+    </h1>
+    <div class="flex gap-4 text-[14px]">
       {
         project.data.githubUrl && (
-          <a href={project.data.githubUrl} target="_blank" rel="noreferrer" class="hover:text-accent">
+          <a
+            href={project.data.githubUrl}
+            target="_blank"
+            rel="noreferrer"
+            class="font-medium underline underline-offset-4 decoration-2 decoration-[var(--color-ink-subtle)] hover:decoration-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
             GitHub
           </a>
         )
       }
       {
         project.data.demoUrl && (
-          <a href={project.data.demoUrl} target="_blank" rel="noreferrer" class="hover:text-accent">
+          <a
+            href={project.data.demoUrl}
+            target="_blank"
+            rel="noreferrer"
+            class="font-medium underline underline-offset-4 decoration-2 decoration-[var(--color-ink-subtle)] hover:decoration-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
             Demo
           </a>
         )
@@ -41,7 +57,21 @@ const { Content } = await render(project);
     </div>
   </header>
 
-  <article class="prose prose-sm max-w-none prose-headings:text-ink prose-p:text-ink-muted prose-strong:text-ink prose-a:text-accent prose-code:text-ink">
+  <article
+    class="prose prose-neutral max-w-none text-[var(--color-ink)]
+           prose-headings:tracking-tight prose-headings:font-semibold prose-headings:text-[var(--color-ink)]
+           prose-h2:text-[20px] prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-[var(--color-line)]
+           prose-h3:text-[17px] prose-h3:mt-8 prose-h3:mb-3
+           prose-p:text-[15px] prose-p:leading-[1.8] prose-p:text-[var(--color-ink)]
+           prose-li:text-[15px] prose-li:leading-[1.75] prose-li:my-1 prose-li:text-[var(--color-ink)]
+           marker:text-[var(--color-ink-subtle)]
+           prose-a:font-medium prose-a:text-[var(--color-ink)] prose-a:underline prose-a:underline-offset-4 prose-a:decoration-2 prose-a:decoration-[var(--color-ink-subtle)] prose-a:hover:decoration-[var(--color-accent)] prose-a:hover:text-[var(--color-accent)]
+           prose-strong:text-[var(--color-ink)] prose-strong:font-semibold
+           prose-blockquote:border-l-[3px] prose-blockquote:border-[var(--color-line)] prose-blockquote:pl-4 prose-blockquote:text-[var(--color-ink-muted)] prose-blockquote:not-italic prose-blockquote:font-normal
+           prose-code:text-[13.5px] prose-code:text-[var(--color-ink)] prose-code:bg-[var(--color-code-bg)] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-normal prose-code:before:content-none prose-code:after:content-none
+           prose-pre:border-0
+           prose-img:rounded prose-img:border prose-img:border-[var(--color-line)] prose-img:my-6"
+  >
     <Content />
   </article>
 </Base>
@@ -51,7 +81,8 @@ const { Content } = await render(project);
   const blocks = document.querySelectorAll('pre.mermaid');
   if (blocks.length > 0) {
     import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs').then(({ default: mermaid }) => {
-      mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+      const isDark = document.documentElement.classList.contains('dark');
+      mermaid.initialize({ startOnLoad: false, theme: isDark ? 'dark' : 'neutral' });
       mermaid.run({ nodes: Array.from(blocks) as HTMLElement[] });
     });
   }

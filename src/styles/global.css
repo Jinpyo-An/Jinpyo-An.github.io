@@ -2,93 +2,85 @@
 @plugin '@tailwindcss/typography';
 
 /*
- * 디자인 시스템: 라이트/다크 각각 CSS 변수로 색을 정의하고,
- * 실제 마크업에서는 항상 변수만 참조한다 (하드코딩된 색상 금지).
- * 참고 사이트와 "구조는 같지만 실제 값은 다른" 그린 계열 팔레트.
+ * 색상 변수·spacing·인쇄 스타일은 참고 사이트(Hyune-c.github.io)의
+ * global.css 값을 리터럴하게 그대로 사용한다 (사용자 명시적 요청, 2026-08-09).
  */
-:root {
-  --color-bg: #ffffff;
-  --color-surface: #f7f8f7;
-  --color-ink: #111111;
-  --color-ink-muted: #52525b;
-  --color-ink-subtle: #71717a;
-  --color-line: #e4e4e7;
-  --color-accent: #15803d;
-  --color-accent-ink: #ffffff;
-  --color-accent-soft: #dcfce7;
-
+@theme {
   --font-sans:
-    'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
-    'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
+    'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
 }
 
-html.dark {
-  --color-bg: #0a0d0b;
-  --color-surface: #10140f;
-  --color-ink: #ededed;
-  --color-ink-muted: #a1a1aa;
-  --color-ink-subtle: #71717a;
-  --color-line: #27302a;
-  --color-accent: #4ade80;
-  --color-accent-ink: #0a0d0b;
-  --color-accent-soft: rgba(74, 222, 128, 0.14);
-}
-
-@theme inline {
-  --color-bg: var(--color-bg);
-  --color-surface: var(--color-surface);
-  --color-ink: var(--color-ink);
-  --color-ink-muted: var(--color-ink-muted);
-  --color-ink-subtle: var(--color-ink-subtle);
-  --color-line: var(--color-line);
-  --color-accent: var(--color-accent);
-  --color-accent-ink: var(--color-accent-ink);
-  --color-accent-soft: var(--color-accent-soft);
-  --font-family-sans: var(--font-sans);
-  --font-family-mono: var(--font-mono);
-}
-
-* {
-  border-color: var(--color-line);
-}
-
-html {
+:root {
+  --color-ink: #111111;
+  --color-ink-muted: #555555;
+  --color-ink-subtle: #888888;
+  --color-line: #e6e6e6;
+  --color-line-soft: #f4f4f4;
+  --color-bg: #ffffff;
+  --color-bg-elev: #fafafa;
+  --color-code-bg: #e8e8e8;
+  --color-accent: #2c5cff;
   color-scheme: light;
 }
 
 html.dark {
+  --color-ink: #ededed;
+  --color-ink-muted: #a3a3a3;
+  --color-ink-subtle: #6f6f6f;
+  --color-line: #262626;
+  --color-line-soft: #161616;
+  --color-bg: #0a0a0a;
+  --color-bg-elev: #111111;
+  --color-code-bg: #1f1f1f;
+  --color-accent: #8da6ff;
   color-scheme: dark;
 }
 
-body {
-  background-color: var(--color-bg);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-  transition: background-color 0.2s ease, color 0.2s ease;
+@layer base {
+  html {
+    color: var(--color-ink);
+    background: var(--color-bg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  body {
+    line-height: 1.75;
+    letter-spacing: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 24px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  a:hover {
+    color: var(--color-accent);
+  }
+
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-bg);
+  }
 }
 
-a {
-  color: var(--color-accent);
-}
-
-.tag {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 9999px;
-  background-color: var(--color-accent-soft);
-  color: var(--color-accent);
-  padding: 0.125rem 0.625rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-/* 프로젝트 상세 마크다운 본문에 이미지가 있을 때 클릭 확대 커서 표시 */
+/* 프로젝트 상세 마크다운 본문 이미지 확대 커서 표시 */
 .prose img {
   cursor: zoom-in;
-  border-radius: 0.5rem;
-  border: 1px solid var(--color-line);
 }
 
 /* 이미지 확대 모달 (선택적으로 이미지가 있을 때만 JS에서 활성화) */
@@ -99,7 +91,7 @@ a {
   display: none;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.88);
   padding: 2rem;
 }
 
@@ -110,47 +102,87 @@ a {
 #image-lightbox img {
   max-width: 100%;
   max-height: 100%;
-  border-radius: 0.5rem;
+  border-radius: 6px;
+  cursor: zoom-in;
 }
 
-/* 인쇄(이력서 PDF) 최적화 — 사이드바/버튼은 숨기고 라이트 모드를 강제한다 */
 @media print {
   @page {
     size: A4;
-    margin: 14mm;
+    margin: 16mm 14mm;
   }
 
-  html {
-    color-scheme: light;
+  /* 인쇄는 항상 라이트 모드 강제 */
+  html,
+  html.dark,
+  body {
+    --color-ink: #111111 !important;
+    --color-ink-muted: #444444 !important;
+    --color-ink-subtle: #777777 !important;
+    --color-line: #cfcfcf !important;
+    --color-line-soft: #f0f0f0 !important;
+    --color-bg: #ffffff !important;
+    --color-bg-elev: #fafafa !important;
+    --color-accent: #2c5cff !important;
+    color-scheme: light !important;
+    background: #ffffff !important;
+    color: #111111 !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  html.dark {
-    --color-bg: #ffffff;
-    --color-surface: #f7f8f7;
-    --color-ink: #111111;
-    --color-ink-muted: #52525b;
-    --color-ink-subtle: #71717a;
-    --color-line: #e4e4e7;
-    --color-accent: #15803d;
-    --color-accent-ink: #ffffff;
-    --color-accent-soft: #dcfce7;
+  /* 한글 페이지는 항목이 많아 페이지 수가 늘어나므로 약간 축소 */
+  html[lang='ko'] main {
+    zoom: 0.72;
   }
 
-  html:lang(ko) body {
-    zoom: 0.85;
-  }
-
-  .no-print {
+  /* 사이드바·아이콘 버튼 숨김 — 본문만 인쇄 */
+  aside,
+  .no-print,
+  #theme-toggle,
+  #print-btn {
     display: none !important;
   }
 
-  main {
-    margin-left: 0 !important;
+  /* grid 레이아웃을 단일 컬럼으로 평탄화 */
+  body > div {
+    display: block !important;
     max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
   }
 
-  a {
-    color: var(--color-ink) !important;
-    text-decoration: none;
+  main {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* 섹션·항목이 페이지 경계에서 잘리지 않게 */
+  article,
+  blockquote,
+  h1,
+  h2,
+  h3 {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* 이미지·border가 잉크에 보이게 */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  img {
+    max-width: 100% !important;
+    height: auto !important;
   }
 }

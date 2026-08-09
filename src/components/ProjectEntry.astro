@@ -1,0 +1,57 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  period?: string;
+  summary?: string;
+  techStack: string[];
+}
+const { href, title, period, summary, techStack } = Astro.props;
+
+const summaryParagraphs = summary
+  ? summary.split(/(?<=\.)\s+/).filter((p) => p.trim().length > 0)
+  : [];
+---
+
+<article class="pb-7 print:pb-3 first:pt-0 last:pb-0">
+  <header
+    class="grid grid-cols-1 sm:grid-cols-[1fr_auto] sm:items-baseline gap-1 sm:gap-6 mb-3 print:mb-1.5"
+  >
+    <div class="flex flex-col sm:flex-row sm:items-baseline sm:gap-3">
+      <h3 class="text-[17px] font-semibold tracking-tight text-[var(--color-ink)]">
+        {title}
+      </h3>
+    </div>
+    {
+      period && (
+        <time class="text-[13px] font-mono text-[var(--color-ink-subtle)] tabular-nums">
+          {period}
+        </time>
+      )
+    }
+  </header>
+  {
+    summaryParagraphs.length > 0 && (
+      <blockquote class="summary mb-4 print:mb-2 pl-4 border-l-[3px] border-[var(--color-accent)] text-[14.5px] leading-[1.7] print:leading-[1.45] text-[var(--color-ink-muted)] space-y-1.5 print:space-y-1">
+        {summaryParagraphs.map((p) => <p>{p}</p>)}
+      </blockquote>
+    )
+  }
+  {
+    techStack.length > 0 && (
+      <p class="text-[13px] text-[var(--color-ink-subtle)] mb-2">{techStack.join(' · ')}</p>
+    )
+  }
+  <a
+    href={href}
+    class="text-[14.5px] font-medium underline underline-offset-4 decoration-2 decoration-[var(--color-ink-subtle)] hover:decoration-[var(--color-accent)] hover:text-[var(--color-accent)]"
+  >
+    자세히 보기 →
+  </a>
+</article>
+
+<style>
+  .summary {
+    border-left-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
+  }
+</style>
