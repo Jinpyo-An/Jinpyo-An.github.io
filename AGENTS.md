@@ -66,3 +66,4 @@ Consult these guides before working on related tasks:
 - `@astrojs/markdown-remark`의 `unified()` 프로세서는 `rehypePlugins`를 지정하지 않아도 헤딩 `id` 자동 생성(`rehypeHeadingIds`, `github-slugger` 기반)과 `render()`가 반환하는 `headings` 배열을 기본으로 포함한다 — 앵커 스크롤/목차 기능에 `rehype-slug` 등을 별도로 설치할 필요 없음.
 - 디자인 시스템(`src/styles/global.css`의 색상 hex값, spacing, 인쇄 스타일)은 참고한 외부 사이트의 값을 사용자 요청에 따라 리터럴하게 동일하게 맞춘 의도적 결정 (2026-08-09). 임의로 "정리"하거나 값을 바꾸지 말 것 — 콘텐츠(이력서 텍스트, 이미지)는 재사용하지 않는다.
 - Pretendard 폰트와 mermaid.js는 모두 jsdelivr CDN에서 로드된다(`Base.astro` 폰트 링크, `[...slug].astro`의 동적 import) — 오프라인/CSP 제한 환경에서는 폰트나 다이어그램이 깨질 수 있다.
+- mermaid 예시 코드 블록을 HTML 주석(`<!-- ... -->`)으로 감싸서 "렌더링은 안 되고 문서로만 보이게" 하면 안 된다. CommonMark HTML 주석 블록은 `-->` 문자열이 처음 나오는 줄에서 끝나는데, flowchart 화살표 문법 자체가 `-->`를 쓰므로 주석이 다이어그램 중간에서 조기 종료되고, 뒤에 남은 ` ``` `가 닫히지 않은 코드 블록을 열어서 이후 본문(다음 `##` 섹션 포함)을 통째로 삼켜버린다. mermaid 예시가 필요하면 주석 없이 실제로 렌더링되게 두거나(작성자가 나중에 지우면 됨), 화살표가 없는 설명으로 대체할 것.
