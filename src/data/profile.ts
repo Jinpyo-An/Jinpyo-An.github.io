@@ -36,6 +36,16 @@ export const profile = {
       date: '2026.06',
     },
   ],
+
+  awards: [
+    {
+      name: '소중한 오픈소스 활용 SW 경진대회',
+      rank: '3위',
+      date: '2024.11',
+      description: "'RFID 기반 강의실 키 관리 애플리케이션' 개발",
+      link: 'https://github.com/Jinpyo-An/stevia',
+    },
+  ],
 };
 
 export type Profile = typeof profile;

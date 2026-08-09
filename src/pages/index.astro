@@ -99,4 +99,40 @@ const printName = `${profile.name}_이력서`;
       }
     </p>
   </Section>
+
+  <Section title="Awards" id="awards">
+    <ul class="space-y-3 text-[14.5px]">
+      {
+        profile.awards.map((award) => (
+          <li>
+            <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto] sm:items-baseline gap-x-6">
+              <span>
+                <strong class="font-semibold">{award.name}</strong>
+                <span class="text-[var(--color-ink-muted)] ml-2">{award.rank}</span>
+              </span>
+              <time class="text-[13px] font-mono text-[var(--color-ink-subtle)] tabular-nums">
+                {award.date}
+              </time>
+            </div>
+            <p class="text-[13px] text-[var(--color-ink-subtle)] mt-0.5">
+              {award.description}
+              {award.link && (
+                <>
+                  {' · '}
+                  <a
+                    href={award.link}
+                    target="_blank"
+                    rel="noopener"
+                    class="text-[var(--color-ink-subtle)] hover:text-[var(--color-accent)] transition-colors"
+                  >
+                    GitHub ↗
+                  </a>
+                </>
+              )}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
 </Base>
