@@ -20,6 +20,7 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 - `src/data/profile.ts` — 이름/소개/학력/자격증 등 이력서 텍스트 (`[이렇게 감싼]` placeholder를 실제 내용으로 교체)
 - `src/content/projects/*/index.md` — 프로젝트별 콘텐츠 (Content Layer `glob` 로더, 스키마는 `src/content.config.ts`)
+- `src/pages/index.astro` — 홈(이력서) 페이지, `src/pages/projects/[...slug].astro` — 프로젝트 상세 페이지(`getStaticPaths`로 콘텐츠 컬렉션을 라우트로 변환)
 - `src/components/` — `Sidebar.astro`(내비/다크모드 토글), `Section.astro`, `ProjectEntry.astro`
 - `src/layouts/Base.astro` — 공통 레이아웃
 - `src/styles/global.css` — CSS 변수(`--color-*`)로 라이트/다크 팔레트 관리, 다크모드는 `localStorage`에 저장, 인쇄(⌘/Ctrl+P) 시 사이드바 숨김 + 라이트 모드 강제 전환
@@ -50,3 +51,4 @@ Consult these guides before working on related tasks:
 - Astro 7+("Sätteri" 프로세서)에서 `markdown.remarkPlugins`/`rehypePlugins`는 top-level에서 deprecated. `npm install @astrojs/markdown-remark` 후 `markdown.processor: unified({ remarkPlugins: [...] })`로 설정할 것.
 - Content collection은 Content Layer `glob` 로더(`astro/loaders`)를 `src/content.config.ts`에서 사용 (legacy `type: 'content'` 아님) — 새 컬렉션도 동일 패턴 유지.
 - 디자인 시스템(`src/styles/global.css`의 색상 hex값, spacing, 인쇄 스타일)은 참고한 외부 사이트의 값을 사용자 요청에 따라 리터럴하게 동일하게 맞춘 의도적 결정 (2026-08-09). 임의로 "정리"하거나 값을 바꾸지 말 것 — 콘텐츠(이력서 텍스트, 이미지)는 재사용하지 않는다.
+- Pretendard 폰트와 mermaid.js는 모두 jsdelivr CDN에서 로드된다(`Base.astro` 폰트 링크, `[...slug].astro`의 동적 import) — 오프라인/CSP 제한 환경에서는 폰트나 다이어그램이 깨질 수 있다.
