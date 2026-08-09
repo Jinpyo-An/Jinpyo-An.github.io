@@ -69,17 +69,41 @@ const printName = `${profile.name}_이력서`;
   </Section>
 
   <Section title="Education" id="education">
-    <ul class="space-y-1.5 text-[14.5px]">
+    <ul class="space-y-3 text-[14.5px]">
       {
         profile.education.map((entry) => (
-          <li class="grid grid-cols-1 sm:grid-cols-[1fr_auto] sm:items-baseline gap-x-6">
-            <span>
-              <strong class="font-semibold">{entry.school}</strong>
-              <span class="text-[var(--color-ink-muted)] ml-2">{entry.degree}</span>
-            </span>
-            <time class="text-[13px] font-mono text-[var(--color-ink-subtle)] tabular-nums">
-              {entry.period}
-            </time>
+          <li>
+            <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto] sm:items-baseline gap-x-6">
+              <span>
+                <strong class="font-semibold">{entry.school}</strong>
+                <span class="text-[var(--color-ink-muted)] ml-2">{entry.degree}</span>
+              </span>
+              <time class="text-[13px] font-mono text-[var(--color-ink-subtle)] tabular-nums">
+                {entry.period}
+              </time>
+            </div>
+            {entry.activities && (
+              <ul class="mt-1.5 space-y-1 pl-4 list-disc marker:text-[var(--color-ink-subtle)]">
+                {entry.activities.map((activity) => (
+                  <li class="text-[13px] text-[var(--color-ink-subtle)]">
+                    {activity.text}
+                    {activity.link && (
+                      <>
+                        {' · '}
+                        <a
+                          href={activity.link}
+                          target="_blank"
+                          rel="noopener"
+                          class="text-[var(--color-ink-subtle)] hover:text-[var(--color-accent)] transition-colors"
+                        >
+                          {activity.linkLabel ?? '링크 ↗'}
+                        </a>
+                      </>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         ))
       }
