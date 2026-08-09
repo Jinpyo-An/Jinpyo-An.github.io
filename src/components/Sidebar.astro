@@ -34,7 +34,7 @@ const currentSlug = isProjects ? pathname.replace(/^\/projects\//, '').replace(/
             class={`nav-link nav-summary ${isProjects ? 'is-active' : ''}`}
           >
             <span class="nav-marker nav-marker-toggle" aria-hidden="true">›</span>
-            <span class="nav-summary-link">Projects</span>
+            <span class="nav-summary-link">Portfolio</span>
           </summary>
 
           <ul class="nav-tree-list">
@@ -92,32 +92,6 @@ const currentSlug = isProjects ? pathname.replace(/^\/projects\//, '').replace(/
         stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg
       >
     </button>
-    <a
-      href={profile.githubUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="GitHub"
-      title="GitHub"
-      class="icon-btn inline-flex items-center justify-center w-8 h-8 rounded border border-[var(--color-line)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors text-[var(--color-ink-muted)]"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"
-        ><path
-          d="M12 .5C5.37.5 0 5.78 0 12.29c0 5.21 3.44 9.63 8.21 11.19.6.11.82-.25.82-.58 0-.29-.01-1.04-.02-2.05-3.34.71-4.04-1.58-4.04-1.58-.55-1.37-1.34-1.74-1.34-1.74-1.09-.73.08-.72.08-.72 1.21.08 1.84 1.22 1.84 1.22 1.07 1.8 2.81 1.28 3.5.98.11-.76.42-1.28.76-1.58-2.67-.3-5.47-1.31-5.47-5.83 0-1.29.47-2.34 1.24-3.17-.12-.3-.54-1.51.12-3.15 0 0 1.01-.32 3.3 1.21a11.6 11.6 0 0 1 3-.4c1.02 0 2.05.13 3 .4 2.29-1.53 3.3-1.21 3.3-1.21.66 1.64.24 2.85.12 3.15.77.83 1.24 1.88 1.24 3.17 0 4.53-2.81 5.53-5.49 5.82.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.29 0 .33.22.7.83.58A12.01 12.01 0 0 0 24 12.29C24 5.78 18.63.5 12 .5z"
-        ></path></svg
-      >
-    </a>
-    <a
-      href={`mailto:${profile.email}`}
-      aria-label="이메일"
-      title="이메일"
-      class="icon-btn inline-flex items-center justify-center w-8 h-8 rounded border border-[var(--color-line)] hover:border-[#EA4335] transition-colors text-[var(--color-ink-muted)]"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="11" viewBox="0 0 24 18" fill="currentColor"
-        ><path
-          d="M24 .5v17c0 .276-.224.5-.5.5H20V7.225L12 12.5 4 7.225V18H.5a.5.5 0 0 1-.5-.5V.5C0 .107.37-.164.724.077L12 7.5 23.276.077C23.63-.164 24 .107 24 .5z"
-        ></path></svg
-      >
-    </a>
     <button
       id="print-btn"
       type="button"
@@ -143,7 +117,7 @@ const currentSlug = isProjects ? pathname.replace(/^\/projects\//, '').replace(/
 
     <nav class="md:hidden flex gap-3 text-[13px]">
       <a href="/" class={isHome ? 'text-[var(--color-accent)]' : ''}>Resume</a>
-      <a href="/#projects" class={isProjects ? 'text-[var(--color-accent)]' : ''}>Projects</a>
+      <a href="/#projects" class={isProjects ? 'text-[var(--color-accent)]' : ''}>Portfolio</a>
     </nav>
   </div>
 </aside>
