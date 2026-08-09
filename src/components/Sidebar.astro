@@ -207,13 +207,31 @@ const currentCaseId = pathname.match(/^\/projects\/[^/]+\/troubleshooting\/([^/]
       });
     });
 
-    // 접힌 상태에서 제목(summary)을 클릭하면 펼치기만 하지 않고 해당 링크로 이동한다.
+    // summary(제목)를 클릭하면 펼침/접힘 상태와 무관하게 항상 해당 링크로 이동한다.
+    // Portfolio(최상위 트리)는 같은 페이지 내 앵커로 이동하므로 텍스트를 클릭해도
+    // 네이티브 펼침/접힘이 함께 일어나도 안전하다. 반면 개별 프로젝트 항목은 현재
+    // 보고 있는 프로젝트 자신을 클릭하면 같은 페이지가 새로고침되는데, 이때 네이티브
+    // 토글까지 겹치면 "닫힘" 상태가 localStorage에 저장된 직후 새로고침되어 현재
+    // 프로젝트인데도 사이드바가 접힌 채로 뜨는 문제가 생긴다. 그래서 개별 프로젝트는
+    // 화살표(nav-marker-toggle)를 클릭했을 때만 펼침/접힘이 동작하도록 분리한다.
     document.querySelectorAll('summary[data-nav-href]').forEach(function (summary) {
       var details = summary.parentElement;
-      summary.addEventListener('click', function () {
-        if (details && !details.open) {
-          window.location.href = summary.dataset.navHref;
+      var isPortfolio = details && details.dataset.navKey === 'portfolio';
+      var toggle = summary.querySelector('.nav-marker-toggle');
+
+      if (toggle && !isPortfolio) {
+        toggle.addEventListener('click', function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          if (details) details.open = !details.open;
+        });
+      }
+
+      summary.addEventListener('click', function (event) {
+        if (!isPortfolio) {
+          event.preventDefault();
         }
+        window.location.href = summary.dataset.navHref;
       });
     });
   })();
@@ -244,9 +262,6 @@ const currentCaseId = pathname.match(/^\/projects\/[^/]+\/troubleshooting\/([^/]
   .nav-link.is-active {
     color: var(--color-accent);
     font-weight: 600;
-  }
-  .nav-link.is-active .nav-marker {
-    color: var(--color-accent);
   }
 
   .nav-link .nav-marker-toggle {
