@@ -1,0 +1,156 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/*
+ * 디자인 시스템: 라이트/다크 각각 CSS 변수로 색을 정의하고,
+ * 실제 마크업에서는 항상 변수만 참조한다 (하드코딩된 색상 금지).
+ * 참고 사이트와 "구조는 같지만 실제 값은 다른" 그린 계열 팔레트.
+ */
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #f7f8f7;
+  --color-ink: #111111;
+  --color-ink-muted: #52525b;
+  --color-ink-subtle: #71717a;
+  --color-line: #e4e4e7;
+  --color-accent: #15803d;
+  --color-accent-ink: #ffffff;
+  --color-accent-soft: #dcfce7;
+
+  --font-sans:
+    'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
+    'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+html.dark {
+  --color-bg: #0a0d0b;
+  --color-surface: #10140f;
+  --color-ink: #ededed;
+  --color-ink-muted: #a1a1aa;
+  --color-ink-subtle: #71717a;
+  --color-line: #27302a;
+  --color-accent: #4ade80;
+  --color-accent-ink: #0a0d0b;
+  --color-accent-soft: rgba(74, 222, 128, 0.14);
+}
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-ink: var(--color-ink);
+  --color-ink-muted: var(--color-ink-muted);
+  --color-ink-subtle: var(--color-ink-subtle);
+  --color-line: var(--color-line);
+  --color-accent: var(--color-accent);
+  --color-accent-ink: var(--color-accent-ink);
+  --color-accent-soft: var(--color-accent-soft);
+  --font-family-sans: var(--font-sans);
+  --font-family-mono: var(--font-mono);
+}
+
+* {
+  border-color: var(--color-line);
+}
+
+html {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent);
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* 프로젝트 상세 마크다운 본문에 이미지가 있을 때 클릭 확대 커서 표시 */
+.prose img {
+  cursor: zoom-in;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-line);
+}
+
+/* 이미지 확대 모달 (선택적으로 이미지가 있을 때만 JS에서 활성화) */
+#image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.85);
+  padding: 2rem;
+}
+
+#image-lightbox.open {
+  display: flex;
+}
+
+#image-lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 0.5rem;
+}
+
+/* 인쇄(이력서 PDF) 최적화 — 사이드바/버튼은 숨기고 라이트 모드를 강제한다 */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  html.dark {
+    --color-bg: #ffffff;
+    --color-surface: #f7f8f7;
+    --color-ink: #111111;
+    --color-ink-muted: #52525b;
+    --color-ink-subtle: #71717a;
+    --color-line: #e4e4e7;
+    --color-accent: #15803d;
+    --color-accent-ink: #ffffff;
+    --color-accent-soft: #dcfce7;
+  }
+
+  html:lang(ko) body {
+    zoom: 0.85;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  main {
+    margin-left: 0 !important;
+    max-width: 100% !important;
+  }
+
+  a {
+    color: var(--color-ink) !important;
+    text-decoration: none;
+  }
+}

@@ -1,0 +1,58 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<Base title={`${project.data.title} — 프로젝트`} description={project.data.summary}>
+  <a href="/" class="text-sm text-ink-subtle hover:text-accent">← 목록으로</a>
+
+  <header class="mt-4 mb-8">
+    <h1 class="text-2xl font-bold text-ink">{project.data.title}</h1>
+    <p class="mt-1 text-sm text-ink-subtle">{project.data.period}</p>
+    <ul class="mt-3 flex flex-wrap gap-1.5">
+      {project.data.techStack.map((tech) => <li class="tag">{tech}</li>)}
+    </ul>
+    <div class="mt-3 flex gap-4 text-sm">
+      {
+        project.data.githubUrl && (
+          <a href={project.data.githubUrl} target="_blank" rel="noreferrer" class="hover:text-accent">
+            GitHub
+          </a>
+        )
+      }
+      {
+        project.data.demoUrl && (
+          <a href={project.data.demoUrl} target="_blank" rel="noreferrer" class="hover:text-accent">
+            Demo
+          </a>
+        )
+      }
+    </div>
+  </header>
+
+  <article class="prose prose-sm max-w-none prose-headings:text-ink prose-p:text-ink-muted prose-strong:text-ink prose-a:text-accent prose-code:text-ink">
+    <Content />
+  </article>
+</Base>
+
+<script>
+  // 본문에 mermaid 다이어그램 블록이 있을 때만 CDN에서 mermaid를 불러와 렌더링한다. (선택적 기능)
+  const blocks = document.querySelectorAll('pre.mermaid');
+  if (blocks.length > 0) {
+    import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs').then(({ default: mermaid }) => {
+      mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+      mermaid.run({ nodes: Array.from(blocks) as HTMLElement[] });
+    });
+  }
+</script>
