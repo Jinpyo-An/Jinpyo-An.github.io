@@ -83,6 +83,30 @@ html.dark {
   cursor: zoom-in;
 }
 
+/* 스크린샷 등 여러 이미지를 나란히 배치할 때 쓰는 래퍼 (본문에서 <div class="image-row"> ... </div>로 감싸서 사용) */
+.prose .image-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.prose .image-row > figure {
+  flex: 1;
+  min-width: 240px;
+  margin: 0;
+}
+
+.prose .image-row > figure > p {
+  margin: 0;
+}
+
+.prose .image-row > figure > figcaption {
+  margin-top: 0.5rem;
+  color: var(--color-ink-subtle);
+  font-size: 13px;
+  text-align: center;
+}
+
 /* 이미지 확대 모달 (선택적으로 이미지가 있을 때만 JS에서 활성화) */
 #image-lightbox {
   position: fixed;

@@ -20,11 +20,6 @@ const printName = `${profile.name}_${project.data.title}`;
   <header class="mb-10">
     <p class="text-[13px] text-[var(--color-ink-subtle)] mb-2">
       {project.data.period}
-      {
-        project.data.techStack.length > 0 && (
-          <span class="ml-2 font-mono">· {project.data.techStack.join(' · ')}</span>
-        )
-      }
     </p>
     <h1 class="text-[30px] md:text-[34px] font-bold leading-[1.25] tracking-tight mb-3">
       {project.data.title}
