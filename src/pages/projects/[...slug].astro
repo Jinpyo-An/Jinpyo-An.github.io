@@ -1,5 +1,5 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import { profile } from '../../data/profile';
 
@@ -12,8 +12,12 @@ export async function getStaticPaths() {
 }
 
 const { project } = Astro.props;
-const { Content } = await render(project);
 const printName = `${profile.name}_${project.data.title}`;
+
+// 이 프로젝트에 속한 트러블슈팅 사례 목록 (사이드바와 동일한 정렬 규칙).
+const cases = (await getCollection('troubleshooting'))
+  .filter((entry) => entry.id.split('/')[0] === project.id)
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Base title={`${project.data.title} — 프로젝트`} description={project.data.summary} printName={printName}>
@@ -52,33 +56,87 @@ const printName = `${profile.name}_${project.data.title}`;
     </div>
   </header>
 
-  <article
-    class="prose prose-neutral max-w-none text-[var(--color-ink)]
-           prose-headings:tracking-tight prose-headings:font-semibold prose-headings:text-[var(--color-ink)]
-           prose-h2:text-[20px] prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-[var(--color-line)]
-           prose-h3:text-[17px] prose-h3:mt-8 prose-h3:mb-3
-           prose-p:text-[15px] prose-p:leading-[1.8] prose-p:text-[var(--color-ink)]
-           prose-li:text-[15px] prose-li:leading-[1.75] prose-li:my-1 prose-li:text-[var(--color-ink)]
-           marker:text-[var(--color-ink-subtle)]
-           prose-a:font-medium prose-a:text-[var(--color-ink)] prose-a:underline prose-a:underline-offset-4 prose-a:decoration-2 prose-a:decoration-[var(--color-ink-subtle)] prose-a:hover:decoration-[var(--color-accent)] prose-a:hover:text-[var(--color-accent)]
-           prose-strong:text-[var(--color-ink)] prose-strong:font-semibold
-           prose-blockquote:border-l-[3px] prose-blockquote:border-[var(--color-line)] prose-blockquote:pl-4 prose-blockquote:text-[var(--color-ink-muted)] prose-blockquote:not-italic prose-blockquote:font-normal
-           prose-code:text-[13.5px] prose-code:text-[var(--color-ink)] prose-code:bg-[var(--color-code-bg)] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-normal prose-code:before:content-none prose-code:after:content-none
-           prose-pre:border-0
-           prose-img:rounded prose-img:border prose-img:border-[var(--color-line)] prose-img:my-6"
-  >
-    <Content />
-  </article>
+  <p class="text-[15px] leading-[1.8] text-[var(--color-ink)] mb-10">
+    {project.data.summary}
+  </p>
+
+  <nav aria-label="프로젝트 하위 문서">
+    <ul class="doc-nav-list">
+      <li>
+        <a href={`/projects/${project.id}/overview/`} class="doc-nav-link">
+          <span>서비스 개요</span>
+          <span class="doc-nav-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+      {
+        cases.length > 0 && (
+          <>
+            <li class="doc-nav-divider" aria-hidden="true">
+              문제 해결
+            </li>
+            {cases.map((entry) => {
+              const caseId = entry.id.split('/')[1];
+              return (
+                <li>
+                  <a
+                    href={`/projects/${project.id}/troubleshooting/${caseId}/`}
+                    class="doc-nav-link"
+                  >
+                    <span>{entry.data.title}</span>
+                    <span class="doc-nav-arrow" aria-hidden="true">
+                      →
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
+          </>
+        )
+      }
+    </ul>
+  </nav>
 </Base>
 
-<script>
-  // 본문에 mermaid 다이어그램 블록이 있을 때만 CDN에서 mermaid를 불러와 렌더링한다. (선택적 기능)
-  const blocks = document.querySelectorAll('pre.mermaid');
-  if (blocks.length > 0) {
-    import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs').then(({ default: mermaid }) => {
-      const isDark = document.documentElement.classList.contains('dark');
-      mermaid.initialize({ startOnLoad: false, theme: isDark ? 'dark' : 'neutral' });
-      mermaid.run({ nodes: Array.from(blocks) as HTMLElement[] });
-    });
+<style>
+  .doc-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
-</script>
+  .doc-nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--color-ink);
+    transition:
+      border-color 0.15s ease,
+      color 0.15s ease;
+  }
+  .doc-nav-link:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+  .doc-nav-arrow {
+    color: var(--color-ink-subtle);
+    transition: color 0.15s ease;
+  }
+  .doc-nav-link:hover .doc-nav-arrow {
+    color: var(--color-accent);
+  }
+  .doc-nav-divider {
+    margin-top: 8px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--color-line);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-subtle);
+  }
+</style>
