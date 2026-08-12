@@ -197,34 +197,29 @@ const currentCaseId = pathname.match(/^\/projects\/[^/]+\/troubleshooting\/([^/]
       });
     });
 
-    // summary(제목)를 클릭했을 때의 규칙은 Portfolio와 개별 프로젝트가 서로 다르다.
-    // Portfolio는 화살표 전용 토글이 따로 없어 제목 텍스트 클릭이 접기/펼치기의
-    // 유일한 수단이므로, 이미 펼쳐진 상태라면 접기만 하고 이동하지 않는다(그러면
-    // 다른 페이지에서 접으려 할 때마다 강제로 이동해버리는 문제가 생긴다).
-    // 반면 개별 프로젝트 항목은 화살표(.nav-marker-toggle)가 접기/펼치기를 전담하므로,
-    // 제목 텍스트는 상태와 무관하게 항상 이동을 담당한다 — 이미 펼쳐진 채로 열리는
-    // 하위 페이지(트러블슈팅 사례 등)에서도 제목을 클릭하면 프로젝트 상단으로
-    // 이동해야 하기 때문이다. 닫힌 상태라면 펼치면서 함께 이동한다.
-    // 클릭 이벤트 핸들러가 실행되는 시점엔 아직 네이티브 토글이 적용되기 전이라
-    // details.open이 클릭 전 상태를 담고 있으므로, 이를 이용해 "펼치는 클릭"인지
-    // "접는 클릭"인지 구분한다. Portfolio의 "접는 클릭"은 preventDefault를 호출하지
-    // 않아 네이티브 토글이 그대로 접어주도록 둔다.
+    // summary(제목)를 클릭했을 때의 규칙은 Portfolio와 개별 프로젝트 항목이 동일하다.
+    // 화살표(.nav-marker-toggle)가 접기/펼치기를 전담하므로, 제목 텍스트는 펼침
+    // 상태와 무관하게 항상 이동을 담당한다 — 이미 펼쳐진 채로 열리는 하위 페이지
+    // (프로젝트 상세, 트러블슈팅 사례 등)에서도 제목을 클릭하면 상단(Portfolio는
+    // 홈의 #projects, 프로젝트 항목은 해당 프로젝트 페이지)으로 이동해야 하기
+    // 때문이다. 닫힌 상태라면 펼치면서 함께 이동한다.
+    // (과거에는 Portfolio만 화살표가 없어 제목 클릭이 접기/펼치기를 겸했는데, 그
+    // 결과 이미 펼쳐진 Portfolio를 클릭하면 접기만 하고 #projects로 이동하지 않는
+    // 버그가 있었다. 이제는 Portfolio도 다른 항목과 동일하게 화살표를 갖고
+    // 접기/펼치기를 전담시키므로 별도 취급이 필요 없다.)
     //
-    // 다만 "펼치는 클릭"의 이동 대상이 실제로 다른 문서로 가는 경우(개별 프로젝트
-    // 항목처럼 다른 URL, 혹은 현재 페이지와 같은 URL이라도 전체 새로고침이 일어나는
-    // 경우)에는 네이티브 토글의 'toggle' 이벤트(비동기)가 발생할 시간도 없이 문서가
-    // 언로드되어, localStorage에 펼침 상태가 기록되지 못한 채 새로고침된다. 그러면
-    // 새로고침된 페이지에서 이전에 저장된 "닫힘" 값을 그대로 읽어와 다시 접힌 채로
-    // 렌더링되는 문제가 생긴다. 그래서 이 경우엔 details.open과 localStorage를 클릭
-    // 시점에 직접 동기적으로 기록해준다. Portfolio는 같은 페이지 내 앵커 이동이라
-    // 문서가 언로드되지 않으므로(펼치는 클릭이 발생하는 경우는 항상 홈 화면 안에서의
-    // 앵커 스크롤이다) 이 보정이 필요 없다.
+    // "펼치는 클릭"의 이동 대상이 실제로 다른 문서로 가는 경우(다른 URL, 혹은
+    // 현재 페이지와 같은 URL이라도 전체 새로고침이 일어나는 경우)에는 네이티브
+    // 토글의 'toggle' 이벤트(비동기)가 발생할 시간도 없이 문서가 언로드되어,
+    // localStorage에 펼침 상태가 기록되지 못한 채 새로고침된다. 그러면 새로고침된
+    // 페이지에서 이전에 저장된 "닫힘" 값을 그대로 읽어와 다시 접힌 채로 렌더링되는
+    // 문제가 생긴다. 그래서 details.open과 localStorage를 클릭 시점에 직접
+    // 동기적으로 기록해준다.
     document.querySelectorAll('summary[data-nav-href]').forEach(function (summary) {
       var details = summary.parentElement;
-      var isPortfolio = details && details.dataset.navKey === 'portfolio';
       var toggle = summary.querySelector('.nav-marker-toggle');
 
-      if (toggle && !isPortfolio) {
+      if (toggle) {
         toggle.addEventListener('click', function (event) {
           event.preventDefault();
           event.stopPropagation();
@@ -234,19 +229,14 @@ const currentCaseId = pathname.match(/^\/projects\/[^/]+\/troubleshooting\/([^/]
 
       summary.addEventListener('click', function (event) {
         if (details && details.open) {
-          if (isPortfolio) {
-            // Portfolio는 화살표 전용 토글이 없어 제목 클릭이 접기의 유일한 수단이다.
-            // 펼쳐진 상태를 접기만 하는 클릭 → 네이티브 토글만 적용하고 이동하지 않는다.
-            return;
-          }
-          // 개별 프로젝트 항목은 화살표가 접기를 전담하므로, 펼쳐진 상태에서 제목을
-          // 클릭해도 접지 않고 항상 이동한다(네이티브 토글로 인한 접힘은 막는다).
+          // 화살표가 접기를 전담하므로, 펼쳐진 상태에서 제목을 클릭해도 접지 않고
+          // 항상 이동한다(네이티브 토글로 인한 접힘은 막는다).
           event.preventDefault();
           window.location.href = summary.dataset.navHref;
           return;
         }
         // 접힌 상태를 펼치는 클릭 → 펼침과 함께 이동한다.
-        if (details && !isPortfolio) {
+        if (details) {
           event.preventDefault();
           details.open = true;
           try {
