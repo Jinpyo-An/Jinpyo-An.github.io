@@ -2,11 +2,23 @@
 interface Props {
   href: string;
   title: string;
+  role?: string;
   period?: string;
   summary?: string;
   techStack: string[];
+  implementationHighlights?: string[];
+  troubleshootingHighlights?: { title: string; href: string }[];
 }
-const { href, title, period, summary, techStack } = Astro.props;
+const {
+  href,
+  title,
+  role,
+  period,
+  summary,
+  techStack,
+  implementationHighlights,
+  troubleshootingHighlights,
+} = Astro.props;
 
 const summaryParagraphs = summary
   ? summary.split(/(?<=\.)\s+/).filter((p) => p.trim().length > 0)
@@ -21,6 +33,7 @@ const summaryParagraphs = summary
       <h3 class="text-[17px] font-semibold tracking-tight text-[var(--color-ink)]">
         {title}
       </h3>
+      {role && <span class="text-[13px] text-[var(--color-ink-subtle)]">{role}</span>}
     </div>
     {
       period && (
@@ -40,6 +53,39 @@ const summaryParagraphs = summary
   {
     techStack.length > 0 && (
       <p class="text-[13px] text-[var(--color-ink-subtle)] mb-2">{techStack.join(' · ')}</p>
+    )
+  }
+  {
+    implementationHighlights && implementationHighlights.length > 0 && (
+      <div class="mb-2 print:mb-1">
+        <p class="text-[12.5px] font-semibold text-[var(--color-ink-subtle)] mb-1">구현 내용</p>
+        <ul class="space-y-1 print:space-y-0.5 pl-4 list-disc marker:text-[var(--color-ink-subtle)]">
+          {implementationHighlights.map((item) => (
+            <li class="text-[13px] text-[var(--color-ink)]">{item}</li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+  {
+    troubleshootingHighlights && troubleshootingHighlights.length > 0 && (
+      <div class="mb-3 print:mb-1.5">
+        <p class="text-[12.5px] font-semibold text-[var(--color-ink-subtle)] mb-1">문제 해결</p>
+        <ul class="space-y-1 print:space-y-0.5 pl-4 list-disc marker:text-[var(--color-ink-subtle)]">
+          {troubleshootingHighlights.map((item) => (
+            <li class="text-[13px] text-[var(--color-ink)]">
+              {item.title}
+              {' · '}
+              <a
+                href={item.href}
+                class="text-[var(--color-ink-subtle)] hover:text-[var(--color-accent)] transition-colors"
+              >
+                문서 보기 ↗
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     )
   }
   <a

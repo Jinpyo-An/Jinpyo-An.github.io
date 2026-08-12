@@ -23,6 +23,15 @@ const projects = defineCollection({
     order: z.number(),
     githubUrl: z.string().url().optional(),
     demoUrl: z.string().url().optional(),
+    // 홈 화면 카드에 제목 옆으로 노출되는 역할 부제 (예: "결제/AI 서비스 백엔드 개발")
+    role: z.string().optional(),
+    // 홈 화면 카드의 "구현 내용" 불릿 리스트. 순수 텍스트만 표시된다.
+    implementationHighlights: z.array(z.string()).optional(),
+    // 홈 화면 카드의 "문제 해결" 불릿 리스트에 노출할 트러블슈팅 케이스의 slug
+    // (troubleshooting 폴더명) 배열, 노출 순서대로. 제목 텍스트는 여기 직접
+    // 적지 않고 troubleshooting 컬렉션의 실제 title을 그대로 가져와 렌더링하며,
+    // 각 항목은 해당 케이스 상세 페이지로 링크된다.
+    troubleshootingHighlights: z.array(z.string()).optional(),
   }),
 });
 

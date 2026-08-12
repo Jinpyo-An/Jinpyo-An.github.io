@@ -6,7 +6,24 @@ import ProjectEntry from '../components/ProjectEntry.astro';
 import { profile } from '../data/profile';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const troubleshootingEntries = await getCollection('troubleshooting');
 const printName = `${profile.name}_이력서`;
+
+// 프로젝트 카드의 "문제 해결" 불릿에 쓸 트러블슈팅 케이스를, frontmatter의
+// slug 배열(노출 순서) 그대로 troubleshooting 컬렉션에서 찾아 제목·링크로 변환한다.
+function resolveTroubleshootingHighlights(projectId: string, slugs: string[] | undefined) {
+  if (!slugs) return [];
+  return slugs
+    .map((slug) => ({
+      slug,
+      entry: troubleshootingEntries.find((entry) => entry.id === `${projectId}/${slug}`),
+    }))
+    .filter(({ entry }) => entry !== undefined)
+    .map(({ slug, entry }) => ({
+      title: entry!.data.title,
+      href: `/projects/${projectId}/troubleshooting/${slug}/`,
+    }));
+}
 ---
 
 <Base printName={printName}>
@@ -60,9 +77,15 @@ const printName = `${profile.name}_이력서`;
         <ProjectEntry
           href={`/projects/${project.id}/`}
           title={project.data.title}
+          role={project.data.role}
           period={project.data.period}
           summary={project.data.summary}
           techStack={project.data.techStack}
+          implementationHighlights={project.data.implementationHighlights}
+          troubleshootingHighlights={resolveTroubleshootingHighlights(
+            project.id,
+            project.data.troubleshootingHighlights
+          )}
         />
       ))
     }

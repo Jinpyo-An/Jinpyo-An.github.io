@@ -14,6 +14,17 @@ order: 1
 githubUrl: 'https://github.com/prgrms-be-adv-devcourse/beadv6_6_3JMT_BE'
 # demoUrl은 실제 링크가 생기면 주석을 풀고 채워주세요.
 # demoUrl: 'https://example.com'
+role: '결제/AI 서비스 백엔드 개발'
+implementationHighlights:
+  - '결제 승인 API 구현 — 금액 검증, 사용자 본인 확인, 중복 결제 차단 로직 포함'
+  - '이벤트 기반 부분환불 기능 구현 — Kafka로 환불 요청 이벤트 수신, 환불 요청 단위로 멱등 처리해 중복 환불 방지'
+  - '결제·환불 감사 로그(Audit Log) 구현 — 상태 전이 기록 저장·조회 API, Kafka를 통한 ELK 연동'
+  - 'AI 기반 상품 자동검수 파이프라인 구현 — Kafka 이벤트 소비 기반, Vision 멀티모달로 텍스트·이미지 함께 판정'
+troubleshootingHighlights:
+  - 'page-composition-frontend-migration'
+  - 'refund-rest-to-event-redesign'
+  - 'toss-payment-resilience-layers'
+  - 'order-verification-cache-to-grpc'
 ---
 
 ## 서비스 설명
