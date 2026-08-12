@@ -72,6 +72,13 @@ function resolveTroubleshootingHighlights(projectId: string, slugs: string[] | u
   </div>
 
   <Section title="Projects" id="projects">
+    <p slot="aside" class="text-[13px] text-[var(--color-ink-subtle)]">
+      자세한 내용은{' '}
+      <a href="/projects" class="font-semibold underline text-[var(--color-ink)]">
+        포트폴리오
+      </a>
+      를 참고해 주세요.
+    </p>
     {
       projects.map((project) => (
         <ProjectEntry
