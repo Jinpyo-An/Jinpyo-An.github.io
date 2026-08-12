@@ -12,6 +12,16 @@ order: 2
 githubUrl: 'https://github.com/next-frame-lab/api-server'
 # demoUrl은 실제 링크가 생기면 주석을 풀고 채워주세요.
 # demoUrl: 'https://example.com'
+role: '인증/예매 도메인 백엔드 개발'
+implementationHighlights:
+  - '조회 성능 개선을 위한 캐싱 전략 적용 — Redis 기반 캐싱 전환, 데이터 특성별 차등 캐시 유지 시간 적용, 예매 확정 시 캐시 무효화 처리'
+  - '소셜 로그인 및 인증/인가 체계 구축 — 카카오 소셜 로그인과 JWT 기반 토큰 발급/재발급 구현, 서버 측 로그아웃(토큰 무효화) 처리'
+  - '공연/좌석/리뷰 도메인 API 설계 및 구현 — 공연 조회, 좌석 배치·상태 조회, 리뷰 작성·좋아요 등 핵심 도메인 API 설계 및 구현'
+  - 'QueryDSL 기반 쿼리 구조 개선 — 복잡한 JPQL을 QueryDSL Custom Repository로 전환, 공연 조회 쿼리 방식 통일 및 공통 메서드 추출'
+troubleshootingHighlights:
+  - 'redis-distributed-lock'
+  - 'oauth-multi-provider'
+  - 'reservation-expiry-optimistic-lock'
 ---
 
 ## 서비스 설명
