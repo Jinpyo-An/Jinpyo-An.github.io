@@ -1,7 +1,7 @@
 ---
-title: 'AI 프롬프트 거래 마켓플레이스'
+title: 'AI 프롬프트 마켓플레이스'
 period: '2026.06 - 2026.07'
-summary: 'AI가 생성한 프롬프트를 상품처럼 등록·판매·구매하는 MSA 기반 마켓플레이스 백엔드'
+summary: 'AI 프롬프트를 등록·판매·구매하는 MSA 기반 마켓플레이스 서비스'
 techStack:
   - 'Java'
   - 'Spring Boot'
@@ -14,7 +14,7 @@ order: 1
 githubUrl: 'https://github.com/prgrms-be-adv-devcourse/beadv6_6_3JMT_BE'
 # demoUrl은 실제 링크가 생기면 주석을 풀고 채워주세요.
 # demoUrl: 'https://example.com'
-role: '결제/AI 서비스 백엔드 개발'
+role: '결제/AI 도메인 백엔드 개발'
 implementationHighlights:
   - '결제 승인 API 구현 — 금액 검증, 사용자 본인 확인, 중복 결제 차단 로직 포함'
   - '이벤트 기반 부분환불 기능 구현 — Kafka로 환불 요청 이벤트 수신, 환불 요청 단위로 멱등 처리해 중복 환불 방지'
