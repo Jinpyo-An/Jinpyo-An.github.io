@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { profile } from '../../data/profile';
+
+// 순수 내비게이션 인덱스 페이지. 콘텐츠를 종합하지 않고, 각 프로젝트 랜딩
+// 페이지(/projects/{project}/)로 이동시키는 링크 목록만 보여준다.
+// 사이드바 "Portfolio" 항목의 이동 대상(데스크톱 트리 요약 + 모바일 flat
+// 링크)이 이 페이지다 — 이전에는 모바일에서 트리 내비가 통째로 숨겨져서
+// 홈의 "#projects" 앵커만 남았는데, 그게 사실상 죽은 링크처럼 느껴졌다.
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title={`Projects — ${profile.name}`}
+  description="전체 프로젝트 목록입니다. 프로젝트를 선택하면 상세 페이지로 이동합니다."
+>
+  <header class="mb-8">
+    <h1 class="text-[30px] md:text-[34px] font-bold leading-[1.25] tracking-tight mb-2">Projects</h1>
+    <p class="text-[14.5px] text-[var(--color-ink-subtle)]">
+      전체 프로젝트 목록입니다. 프로젝트를 선택하면 상세 페이지로 이동합니다.
+    </p>
+  </header>
+
+  <nav aria-label="프로젝트 목록">
+    <ul class="flex flex-col gap-2">
+      {
+        projects.map((project) => (
+          <li>
+            <a
+              href={`/projects/${project.id}/`}
+              class="group flex items-center justify-between gap-3 px-4 py-3.5 border border-[var(--color-line)] rounded-md text-[14.5px] font-medium text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
+            >
+              <span class="flex items-baseline gap-3">
+                <span>{project.data.title}</span>
+                <time class="text-[12px] font-mono text-[var(--color-ink-subtle)] tabular-nums">
+                  {project.data.period}
+                </time>
+              </span>
+              <span
+                aria-hidden="true"
+                class="text-[var(--color-ink-subtle)] group-hover:text-[var(--color-accent)] transition-colors"
+              >
+                →
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</Base>

@@ -41,7 +41,7 @@ const currentCaseId = pathname.match(/^\/projects\/[^/]+\/troubleshooting\/([^/]
       </li>
       <li>
         <details open={isProjects} class="nav-tree" data-nav-key="portfolio">
-          <summary class={`nav-link nav-summary ${isProjects ? 'is-active' : ''}`} data-nav-href="/#projects">
+          <summary class={`nav-link nav-summary ${isProjects ? 'is-active' : ''}`} data-nav-href="/projects/">
             <span class="nav-marker nav-marker-toggle" aria-hidden="true">›</span>
             <span class="nav-summary-link">Portfolio</span>
           </summary>
@@ -169,7 +169,7 @@ const currentCaseId = pathname.match(/^\/projects\/[^/]+\/troubleshooting\/([^/]
 
     <nav class="md:hidden flex gap-3 text-[13px]">
       <a href="/" class={isHome ? 'text-[var(--color-accent)]' : ''}>Resume</a>
-      <a href="/#projects" class={isProjects ? 'text-[var(--color-accent)]' : ''}>Portfolio</a>
+      <a href="/projects/" class={isProjects ? 'text-[var(--color-accent)]' : ''}>Portfolio</a>
     </nav>
   </div>
 </aside>
@@ -201,8 +201,8 @@ const currentCaseId = pathname.match(/^\/projects\/[^/]+\/troubleshooting\/([^/]
     // 화살표(.nav-marker-toggle)가 접기/펼치기를 전담하므로, 제목 텍스트는 펼침
     // 상태와 무관하게 항상 이동을 담당한다 — 이미 펼쳐진 채로 열리는 하위 페이지
     // (프로젝트 상세, 트러블슈팅 사례 등)에서도 제목을 클릭하면 상단(Portfolio는
-    // 홈의 #projects, 프로젝트 항목은 해당 프로젝트 페이지)으로 이동해야 하기
-    // 때문이다. 닫힌 상태라면 펼치면서 함께 이동한다.
+    // 전체 프로젝트 목록 페이지, 프로젝트 항목은 해당 프로젝트 페이지)으로
+    // 이동해야 하기 때문이다. 닫힌 상태라면 펼치면서 함께 이동한다.
     // (과거에는 Portfolio만 화살표가 없어 제목 클릭이 접기/펼치기를 겸했는데, 그
     // 결과 이미 펼쳐진 Portfolio를 클릭하면 접기만 하고 #projects로 이동하지 않는
     // 버그가 있었다. 이제는 Portfolio도 다른 항목과 동일하게 화살표를 갖고
