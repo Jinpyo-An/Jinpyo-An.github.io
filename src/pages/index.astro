@@ -75,7 +75,6 @@ function resolveTroubleshootingHighlights(projectId: string, slugs: string[] | u
     {
       projects.map((project) => (
         <ProjectEntry
-          href={`/projects/${project.id}/`}
           title={project.data.title}
           role={project.data.role}
           period={project.data.period}

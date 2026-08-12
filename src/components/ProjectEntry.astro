@@ -1,6 +1,5 @@
 ---
 interface Props {
-  href: string;
   title: string;
   role?: string;
   period?: string;
@@ -10,7 +9,6 @@ interface Props {
   troubleshootingHighlights?: { title: string; href: string }[];
 }
 const {
-  href,
   title,
   role,
   period,
@@ -88,12 +86,6 @@ const summaryParagraphs = summary
       </div>
     )
   }
-  <a
-    href={href}
-    class="text-[14.5px] font-medium underline underline-offset-4 decoration-2 decoration-[var(--color-ink-subtle)] hover:decoration-[var(--color-accent)] hover:text-[var(--color-accent)]"
-  >
-    자세히 보기 →
-  </a>
 </article>
 
 <style>
