@@ -3,11 +3,15 @@ title: '공연 예매 서비스'
 period: '2025.05 - 2025.12'
 summary: '보고싶은 공연의 좌석을 예매하고 QR 티켓을 발급받는 예매 서비스'
 techStack:
-  - 'Spring Boot'
+  - 'Java 21'
+  - 'Spring Boot 3.x.x'
   - 'PostgreSQL'
   - 'Redis'
-  - 'Nginx'
+  - 'Nginx(Reverse Proxy)'
   - 'GitHub Actions'
+  - 'Prometheus'
+  - 'Grafana'
+  - 'Loki'
 order: 2
 githubUrl: 'https://github.com/next-frame-lab/api-server'
 # demoUrl은 실제 링크가 생기면 주석을 풀고 채워주세요.
@@ -19,8 +23,8 @@ implementationHighlights:
   - 'QueryDSL 기반 쿼리 구조 개선 — 복잡한 JPQL을 QueryDSL Custom Repository로 전환, 공연 조회 쿼리 방식 통일 및 공통 메서드 추출'
 troubleshootingHighlights:
   - 'redis-distributed-lock'
-  - 'oauth-multi-provider'
   - 'reservation-expiry-optimistic-lock'
+  - 'oauth-multi-provider'
 ---
 
 ## 서비스 설명
