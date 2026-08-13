@@ -31,7 +31,7 @@ const currentCaseId = pathname.match(/^\/projects\/[^/]+\/troubleshooting\/([^/]
     </p>
   </a>
 
-  <nav class="hidden md:block mt-10 flex-1 min-h-0 overflow-y-auto">
+  <nav class="hidden md:block mt-10 flex-1 min-h-0 overflow-y-auto" data-is-home={isHome ? 'true' : 'false'}>
     <ul class="space-y-0.5 text-[16px]">
       <li>
         <a href="/" class={`nav-link ${isHome ? 'is-active' : ''}`}>
@@ -177,18 +177,25 @@ const currentCaseId = pathname.match(/^\/projects\/[^/]+\/troubleshooting\/([^/]
 <script is:inline>
   (function () {
     var STORAGE_PREFIX = 'sidebar-open:';
+    var navEl = document.querySelector('nav[data-is-home]');
+    var isHome = !!navEl && navEl.dataset.isHome === 'true';
 
     // 트리 펼침/접힘 상태를 localStorage에 저장해서 새로고침 후에도 유지한다.
     // 저장된 값이 없으면(첫 방문) 서버에서 계산한 기본 상태(현재 보고 있는
     // 프로젝트만 펼침)를 그대로 둔다.
+    // 단, 홈 화면에서는 이 복원을 건너뛴다 — 프로젝트 페이지를 보다가 홈으로
+    // 돌아왔을 때 예전에 펼쳐뒀던 상태가 되살아나 트리가 펼쳐진 채로 보이는
+    // 것을 막고, 서버 기본값(전부 접힘)을 그대로 유지하기 위해서다.
     document.querySelectorAll('details[data-nav-key]').forEach(function (details) {
       var key = STORAGE_PREFIX + details.dataset.navKey;
-      var stored = null;
-      try {
-        stored = localStorage.getItem(key);
-      } catch (_) {}
-      if (stored !== null) {
-        details.open = stored === '1';
+      if (!isHome) {
+        var stored = null;
+        try {
+          stored = localStorage.getItem(key);
+        } catch (_) {}
+        if (stored !== null) {
+          details.open = stored === '1';
+        }
       }
       details.addEventListener('toggle', function () {
         try {
