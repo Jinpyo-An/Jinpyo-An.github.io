@@ -43,7 +43,19 @@ const printName = `${profile.name}_${project.data.title}_서비스 개요`;
             rel="noreferrer"
             class="font-medium underline underline-offset-4 decoration-2 decoration-[var(--color-ink-subtle)] hover:decoration-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
-            GitHub
+            {project.data.frontendGithubUrl ? 'GitHub (BE)' : 'GitHub'}
+          </a>
+        )
+      }
+      {
+        project.data.frontendGithubUrl && (
+          <a
+            href={project.data.frontendGithubUrl}
+            target="_blank"
+            rel="noreferrer"
+            class="font-medium underline underline-offset-4 decoration-2 decoration-[var(--color-ink-subtle)] hover:decoration-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            GitHub (FE)
           </a>
         )
       }

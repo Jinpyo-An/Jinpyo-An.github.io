@@ -22,6 +22,8 @@ const projects = defineCollection({
     // 홈 화면/사이드바 노출 순서 (작을수록 위)
     order: z.number(),
     githubUrl: z.string().url().optional(),
+    // 프론트/백엔드 레포가 분리된 프로젝트에서 프론트엔드 레포 주소를 추가로 노출할 때 사용
+    frontendGithubUrl: z.string().url().optional(),
     demoUrl: z.string().url().optional(),
     // 홈 화면 카드에 제목 옆으로 노출되는 역할 부제 (예: "결제/AI 서비스 백엔드 개발")
     role: z.string().optional(),

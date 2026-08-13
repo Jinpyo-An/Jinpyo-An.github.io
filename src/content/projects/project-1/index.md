@@ -12,6 +12,7 @@ techStack:
   - 'Kubernetes'
 order: 1
 githubUrl: 'https://github.com/prgrms-be-adv-devcourse/beadv6_6_3JMT_BE'
+frontendGithubUrl: 'https://github.com/prgrms-be-adv-devcourse/beadv6_6_3JMT_FE'
 # demoUrl은 실제 링크가 생기면 주석을 풀고 채워주세요.
 # demoUrl: 'https://example.com'
 role: '결제/AI 도메인 백엔드 개발'
@@ -29,7 +30,7 @@ troubleshootingHighlights:
 
 ## 서비스 설명
 
-AI가 생성한 프롬프트를 상품처럼 등록하고 사고팔 수 있는 마켓플레이스입니다. 판매자가 프롬프트를 등록하면 AI가 이미지·텍스트를 자동으로 검수해 승인 여부를 판정하고, 구매자는 검수를 통과한 상품을 검색해 구매할 수 있습니다.
+AI 프롬프트를 상품으로 등록하고 사고팔 수 있는 마켓플레이스입니다. 판매자가 프롬프트를 등록하면 AI가 이미지·텍스트를 자동으로 검수해 승인 여부를 판정하고, 구매자는 검수를 통과한 상품을 검색해 구매할 수 있습니다.
 
 도메인마다 배포 주기와 트래픽 특성이 달라질 수 있다고 보고, 서비스를 도메인 단위로 완전히 분리해 독립적으로 배포·확장할 수 있는 구조를 만드는 것을 이 프로젝트의 기술적 목표로 잡고 진행했습니다. 서비스 간 결합도를 낮추기 위해 조회성 연동은 동기 호출로, 상태 변경이 뒤따르는 연동은 이벤트 기반 비동기 처리로 구분해 설계했습니다.
 
@@ -41,7 +42,8 @@ AI가 생성한 프롬프트를 상품처럼 등록하고 사고팔 수 있는 �
 | 내부 동기 통신 | gRPC 1.80.0 + Protobuf |
 | 비동기 메시징 | Apache Kafka (Confluent) |
 | 데이터 저장소 | PostgreSQL 18(+pgvector), Redis 7.4, Elasticsearch |
-| 배포/CI-CD | Docker, GitHub Actions, Kubernetes(AWS EC2) |
+| 배포/CI-CD | Docker, GitHub Actions, Kubernetes |
+| 인프라(AWS) | EC2, S3 |
 | 외부 연동 | Toss Payments, OpenAI |
 | 관측성 | Fluent Bit, Logstash, Elasticsearch, Kibana |
 
