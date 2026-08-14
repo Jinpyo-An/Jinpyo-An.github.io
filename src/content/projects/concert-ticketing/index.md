@@ -4,7 +4,7 @@ period: '2025.05 - 2025.12'
 summary: '보고싶은 공연의 좌석을 예매하고 QR 티켓을 발급받는 예매 서비스'
 techStack:
   - 'Java 21'
-  - 'Spring Boot 3.x.x'
+  - 'Spring Boot 3'
   - 'PostgreSQL'
   - 'Redis'
   - 'Nginx(Reverse Proxy)'

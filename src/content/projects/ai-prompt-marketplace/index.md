@@ -4,7 +4,7 @@ period: '2026.06 - 2026.07'
 summary: 'AI 프롬프트를 등록·판매·구매하는 MSA 기반 마켓플레이스 서비스'
 techStack:
   - 'Java 21'
-  - 'Spring Boot 4.x.x'
+  - 'Spring Boot 4'
   - 'Spring Cloud'
   - 'gRPC'
   - 'Kafka'
