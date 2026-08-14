@@ -12,7 +12,7 @@ type EducationEntry = {
 export const profile = {
   name: '안진표',
   tagline: 'backend developer',
-  headline: '백엔드 개발자, 안진표입니다.',
+  headline: '무엇을, 왜 만드는지 끝까지 고민하는 개발자, 안진표입니다.',
   githubUrl: 'https://github.com/Jinpyo-An',
   email: 'dkswlsvy3312@gmail.com',
 
