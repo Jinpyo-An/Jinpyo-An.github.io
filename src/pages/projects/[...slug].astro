@@ -111,9 +111,7 @@ const aiUsage = (await getCollection('aiUsage')).find((entry) => entry.id === pr
       {
         aiUsage && (
           <>
-            <li class="doc-nav-divider" aria-hidden="true">
-              AI 활용
-            </li>
+            <li class="doc-nav-divider" aria-hidden="true"></li>
             <li>
               <a href={`/projects/${project.id}/ai-usage/`} class="doc-nav-link">
                 <span>{aiUsage.data.title}</span>
