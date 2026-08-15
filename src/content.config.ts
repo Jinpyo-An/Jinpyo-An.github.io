@@ -59,4 +59,27 @@ const troubleshooting = defineCollection({
   }),
 });
 
-export const collections = { projects, troubleshooting };
+// 프로젝트별 "AI 활용 방식" 문서 컬렉션.
+// src/content/projects/{project}/ai-usage/index.md 로 추가하면
+// 해당 프로젝트의 사이드바 목차와 랜딩 페이지에 "AI 활용" 링크가 자동 노출되고,
+// 전용 상세 페이지(/projects/{project}/ai-usage/)가 생성된다.
+// troubleshooting과 달리 프로젝트당 최대 1개 문서만 존재하는 것을 전제로 한다
+// (2026-08-15 확정, ai-prompt-marketplace 프로젝트 한정 — 다른 프로젝트에 강제하는
+// 표준은 아니다. write-project-content 스킬의 고정 2단계 구조와는 별개의 문서다).
+// 본문은 "## AI에 대한 나의 생각 → ## 이 프로젝트에 AI를 어떻게 사용했는가"
+// 2단계 구조를 따른다(사이드바 목차에는 반영 안 함).
+const aiUsage = defineCollection({
+  loader: glob({
+    pattern: '*/ai-usage/index.md',
+    base: './src/content/projects',
+    // id를 프로젝트 id 그대로 사용한다 (프로젝트당 문서가 하나뿐이므로
+    // troubleshooting처럼 "{projectId}/{caseId}" 형태로 나눌 필요가 없다).
+    generateId: ({ entry }) => entry.replace(/\/ai-usage\/index\.md$/, ''),
+  }),
+  schema: z.object({
+    // 사이드바 목차/상세 페이지 제목에 노출되는 제목
+    title: z.string(),
+  }),
+});
+
+export const collections = { projects, troubleshooting, aiUsage };

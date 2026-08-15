@@ -18,6 +18,9 @@ const printName = `${profile.name}_${project.data.title}`;
 const cases = (await getCollection('troubleshooting'))
   .filter((entry) => entry.id.split('/')[0] === project.id)
   .sort((a, b) => a.data.order - b.data.order);
+
+// 이 프로젝트의 "AI 활용" 문서 (있는 프로젝트만 노출).
+const aiUsage = (await getCollection('aiUsage')).find((entry) => entry.id === project.id);
 ---
 
 <Base title={`${project.data.title} — 프로젝트`} description={project.data.summary} printName={printName}>
@@ -102,6 +105,21 @@ const cases = (await getCollection('troubleshooting'))
                 </li>
               );
             })}
+          </>
+        )
+      }
+      {
+        aiUsage && (
+          <>
+            <li class="doc-nav-divider" aria-hidden="true">
+              AI 활용
+            </li>
+            <li>
+              <a href={`/projects/${project.id}/ai-usage/`} class="doc-nav-link">
+                <span>{aiUsage.data.title}</span>
+                <span class="doc-nav-arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
           </>
         )
       }

@@ -25,10 +25,12 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 - `src/data/profile.ts` — 이름/소개/학력/자격증 등 이력서 텍스트 (`[이렇게 감싼]` placeholder를 실제 내용으로 교체)
 - `src/content/projects/{project}/index.md` — 프로젝트별 콘텐츠 (Content Layer `glob` 로더, 스키마는 `src/content.config.ts`의 `projects` 컬렉션)
 - `src/content/projects/{project}/troubleshooting/{case}/index.md` — 프로젝트별 트러블슈팅 사례 (`src/content.config.ts`의 `troubleshooting` 컬렉션, nested glob 패턴)
+- `src/content/projects/{project}/ai-usage/index.md` — 프로젝트별 "AI 활용 방식" 문서 (`src/content.config.ts`의 `aiUsage` 컬렉션). 프로젝트당 최대 1개만 존재하는 걸 전제로 하며, 현재는 `ai-prompt-marketplace`에만 예외적으로 존재한다(2026-08-15 확정) — `write-project-content` 스킬의 표준 구조가 아니므로 다른 프로젝트에 강제되지 않는다. 본문은 `## AI에 대한 나의 생각` → `## 이 프로젝트에 AI를 어떻게 사용했는가` 2단계 구조.
 - `src/pages/index.astro` — 홈(이력서) 페이지
-- `src/pages/projects/[...slug].astro` — 프로젝트 랜딩 페이지(`/projects/{project}/`). 헤더(제목/기간/GitHub·Demo 링크) + 한 줄 요약 + 하위 문서(서비스 개요, 트러블슈팅 사례) 내비게이션 목록만 보여주는 허브 페이지다. 본문(Content)은 렌더링하지 않는다.
+- `src/pages/projects/[...slug].astro` — 프로젝트 랜딩 페이지(`/projects/{project}/`). 헤더(제목/기간/GitHub·Demo 링크) + 한 줄 요약 + 하위 문서(서비스 개요, 트러블슈팅 사례, AI 활용 방식) 내비게이션 목록만 보여주는 허브 페이지다. 본문(Content)은 렌더링하지 않는다.
 - `src/pages/projects/[project]/overview.astro` — 서비스 개요 페이지(`/projects/{project}/overview/`). `projects` 컬렉션 엔트리의 본문(Content, `## 서비스 설명` → `## 서비스 구조`)을 렌더링하는 독립 페이지. 프로젝트 랜딩 페이지와 동일한 헤더(기간/GitHub·Demo 링크)를 반복해서, 랜딩 페이지를 거치지 않고 이 URL에 바로 들어와도 맥락이 완결되게 한다.
 - `src/pages/projects/[project]/troubleshooting/[case].astro` — 트러블슈팅 사례 상세 페이지(`getStaticPaths`로 `troubleshooting` 컬렉션을 라우트로 변환)
+- `src/pages/projects/[project]/ai-usage.astro` — "AI 활용 방식" 상세 페이지(`getStaticPaths`로 `aiUsage` 컬렉션을 라우트로 변환). `troubleshooting/[case].astro`와 동일하게 헤더(기간/GitHub·Demo 링크)를 반복하지 않고 페이지 제목만 둔다(2026-08-15 확정, 의도적으로 `overview.astro`와 다른 패턴).
 - `src/components/` — `Sidebar.astro`(내비/다크모드 토글, 프로젝트별 목차 트리), `Section.astro`, `ProjectEntry.astro`
 - `src/layouts/Base.astro` — 공통 레이아웃
 - `src/styles/global.css` — CSS 변수(`--color-*`)로 라이트/다크 팔레트 관리, 다크모드는 `localStorage`에 저장, 인쇄(⌘/Ctrl+P) 시 사이드바 숨김 + 라이트 모드 강제 전환

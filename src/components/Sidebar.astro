@@ -6,11 +6,13 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 const troubleshootingEntries = (await getCollection('troubleshooting')).sort(
   (a, b) => a.data.order - b.data.order,
 );
+const aiUsageEntries = await getCollection('aiUsage');
 
-// 프로젝트별로 목차("서비스 개요" 링크 + 트러블슈팅 사례 목록)를 구성한다.
+// 프로젝트별로 목차("서비스 개요" 링크 + 트러블슈팅 사례 목록 + AI 활용 문서)를 구성한다.
 const projectNavs = projects.map((project) => {
   const cases = troubleshootingEntries.filter((entry) => entry.id.split('/')[0] === project.id);
-  return { project, cases };
+  const aiUsage = aiUsageEntries.find((entry) => entry.id === project.id);
+  return { project, cases, aiUsage };
 });
 
 const pathname = Astro.url.pathname;
@@ -19,6 +21,7 @@ const isProjects = pathname.startsWith('/projects');
 const currentProjectId = pathname.match(/^\/projects\/([^/]+)\/?/)?.[1] ?? '';
 const isOverviewPage = /^\/projects\/[^/]+\/overview\/?$/.test(pathname);
 const currentCaseId = pathname.match(/^\/projects\/[^/]+\/troubleshooting\/([^/]+)\/?/)?.[1] ?? '';
+const isAiUsagePage = /^\/projects\/[^/]+\/ai-usage\/?$/.test(pathname);
 ---
 
 <aside
@@ -48,7 +51,7 @@ const currentCaseId = pathname.match(/^\/projects\/[^/]+\/troubleshooting\/([^/]
 
           <ul class="nav-tree-list">
             {
-              projectNavs.map(({ project, cases }) => {
+              projectNavs.map(({ project, cases, aiUsage }) => {
                 const isCurrentProject = currentProjectId === project.id;
                 return (
                   <li>
@@ -94,6 +97,19 @@ const currentCaseId = pathname.match(/^\/projects\/[^/]+\/troubleshooting\/([^/]
                                 </li>
                               );
                             })}
+                          </>
+                        )}
+                        {aiUsage && (
+                          <>
+                            <li class="nav-tree-divider" aria-hidden="true"></li>
+                            <li>
+                              <a
+                                href={`/projects/${project.id}/ai-usage/`}
+                                class={`nav-tree-item ${isCurrentProject && isAiUsagePage ? 'is-active' : ''}`}
+                              >
+                                {aiUsage.data.title}
+                              </a>
+                            </li>
                           </>
                         )}
                       </ul>
