@@ -55,6 +55,7 @@ Consult these guides before working on related tasks:
 
 ## Gotchas
 
+- `CLAUDE.md`는 `AGENTS.md`를 가리키는 심볼릭 링크다. `Edit`/`Write`로 직접 고치면 거부되므로, 항상 `AGENTS.md`를 수정할 것.
 - Astro 7+("Sätteri" 프로세서)에서 `markdown.remarkPlugins`/`rehypePlugins`는 top-level에서 deprecated. `npm install @astrojs/markdown-remark` 후 `markdown.processor: unified({ remarkPlugins: [...] })`로 설정할 것.
 - Content collection은 Content Layer `glob` 로더(`astro/loaders`)를 `src/content.config.ts`에서 사용 (legacy `type: 'content'` 아님) — 새 컬렉션도 동일 패턴 유지. 중첩된 하위 컬렉션(예: `troubleshooting`)을 추가할 때는 `projects` 컬렉션의 glob `pattern`이 `**/index.md`처럼 재귀적이면 하위 폴더의 `index.md`까지 같이 매칭되어 스키마 검증 에러가 나므로, 정확히 원하는 깊이(`*/index.md` 등)로 좁혀야 한다.
 - `@astrojs/markdown-remark`의 `unified()` 프로세서는 `rehypePlugins`를 지정하지 않아도 헤딩 `id` 자동 생성(`rehypeHeadingIds`, `github-slugger` 기반)과 `render()`가 반환하는 `headings` 배열을 기본으로 포함한다 — 앵커 스크롤/목차 기능에 `rehype-slug` 등을 별도로 설치할 필요 없음.
