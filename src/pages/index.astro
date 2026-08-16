@@ -113,7 +113,10 @@ function resolveTroubleshootingHighlights(projectId: string, slugs: string[] | u
             </div>
             {entry.affiliation && (
               <p class="mt-1.5 text-[13px] font-semibold text-[var(--color-ink)]">
-                {entry.affiliation}
+                {entry.affiliation.text}
+                {entry.affiliation.period && (
+                  <span class="font-normal text-[var(--color-ink-subtle)]"> {entry.affiliation.period}</span>
+                )}
               </p>
             )}
             {entry.activities && (

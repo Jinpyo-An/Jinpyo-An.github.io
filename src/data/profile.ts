@@ -7,8 +7,9 @@ type EducationEntry = {
   period: string;
   // 소속 연구실 등, activities 목록 전체를 아우르는 소속 정보. 불릿 없이 강조된
   // 한 줄로 activities 목록 바로 위에 표시되며, 그 아래 활동들이 이 소속에서
-  // 이루어졌음을 나타낸다.
-  affiliation?: string;
+  // 이루어졌음을 나타낸다. period는 사이트 전반의 날짜 표기 관례(회색)를 따르기
+  // 위해 본문과 색상을 분리해서 렌더링한다.
+  affiliation?: { text: string; period?: string };
   // 재학 중 활동(조교, 프로젝트, 논문 등)을 해당 학교 항목 아래 하위 불릿으로 표시할 때 사용.
   activities?: { text: string; link?: string; linkLabel?: string }[];
 };
@@ -36,7 +37,10 @@ export const profile = {
       school: '국립한밭대학교',
       degree: '정보통신공학과 졸업 3.7 / 4.5',
       period: '2019.03 - 2025.02',
-      affiliation: '무선통신 소프트웨어 연구실(WiSoft) 학부 연구생 (2023.03 - 2025.02)',
+      affiliation: {
+        text: '무선통신 소프트웨어 연구실(WiSoft) 학부 연구생',
+        period: '(2023.03 - 2025.02)',
+      },
       activities: [
         {
           text: "'리눅스와 오픈소스 하드웨어', '데이터베이스' 수업 조교",
