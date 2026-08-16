@@ -16,7 +16,7 @@ order: 2
 githubUrl: 'https://github.com/next-frame-lab/api-server'
 # demoUrl은 실제 링크가 생기면 주석을 풀고 채워주세요.
 # demoUrl: 'https://example.com'
-role: '인증/예매 도메인 백엔드 개발'
+role: '4인 팀(BE2, FE2) | 인증·예매 도메인 백엔드 개발'
 implementationHighlights:
   - '소셜 로그인 및 인증/인가 체계 구축 — 카카오 소셜 로그인과 JWT 기반 토큰 발급/재발급 구현, 서버 측 로그아웃(토큰 무효화) 처리'
   - '공연/좌석/리뷰 도메인 API 설계 및 구현 — 공연 조회, 좌석 배치·상태 조회, 리뷰 작성·좋아요 등 핵심 도메인 API 설계 및 구현'

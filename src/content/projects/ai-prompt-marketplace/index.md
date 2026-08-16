@@ -20,7 +20,7 @@ githubUrl: 'https://github.com/prgrms-be-adv-devcourse/beadv6_6_3JMT_BE'
 frontendGithubUrl: 'https://github.com/prgrms-be-adv-devcourse/beadv6_6_3JMT_FE'
 # demoUrl은 실제 링크가 생기면 주석을 풀고 채워주세요.
 # demoUrl: 'https://example.com'
-role: '결제/AI 도메인 백엔드 개발'
+role: '5인 팀(BE5, FE 공통) | 결제·AI 도메인 백엔드 개발'
 implementationHighlights:
   - '결제 승인 API 구현 — 금액 검증, 사용자 본인 확인, 중복 결제 차단 로직 포함'
   - '이벤트 기반 부분환불 기능 구현 — Kafka로 환불 요청 이벤트 수신, 환불 요청 단위로 멱등 처리해 중복 환불 방지'
