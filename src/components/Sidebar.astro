@@ -193,8 +193,32 @@ const isAiUsagePage = /^\/projects\/[^/]+\/ai-usage\/?$/.test(pathname);
 <script is:inline>
   (function () {
     var STORAGE_PREFIX = 'sidebar-open:';
+    var CARRY_KEY = 'sidebar-carry-open';
     var navEl = document.querySelector('nav[data-is-home]');
     var isHome = !!navEl && navEl.dataset.isHome === 'true';
+    // 프로젝트 목록 허브(/projects/) 페이지인지 여부. 이 페이지에서는 어떤
+    // 프로젝트도 "현재 보고 있는" 상태가 아니므로 서버가 프로젝트별 details를
+    // 전부 접힌 채로 내려준다.
+    var isProjectsHub = /^\/projects\/?$/.test(window.location.pathname);
+    // 지금 보고 있는 프로젝트의 id(프로젝트 상세/트러블슈팅/AI 활용 페이지에서만 값이 있음).
+    var currentProjectId = window.location.pathname.match(/^\/projects\/([^/]+)\/?/)?.[1] ?? '';
+
+    var detailsList = Array.prototype.slice.call(document.querySelectorAll('details[data-nav-key]'));
+
+    // 방금 떠난 페이지에서 실제로 펼쳐져 있던 details의 스냅샷(있다면 한 번만 사용).
+    // localStorage의 "예전에 방문했을 때 남은" 상태와는 별개로, "이동하기 바로
+    // 전 화면에 보이던 상태"만 딱 한 번 다음 페이지로 이어주기 위한 용도다 —
+    // 사용자가 방금 화살표로 다른 프로젝트를 펼쳐두고 다른 항목을 클릭해 이동한
+    // 경우, 그 프로젝트가 이동 후에도 열린 채 유지되게 한다. sessionStorage를
+    // 쓰므로 오래된 방문 기록(다른 세션)까지 되살리지는 않는다.
+    var carryOpen = null;
+    if (!isHome) {
+      try {
+        var raw = sessionStorage.getItem(CARRY_KEY);
+        if (raw) carryOpen = JSON.parse(raw);
+        sessionStorage.removeItem(CARRY_KEY);
+      } catch (_) {}
+    }
 
     // 트리 펼침/접힘 상태를 localStorage에 저장해서 새로고침 후에도 유지한다.
     // 저장된 값이 없으면(첫 방문) 서버에서 계산한 기본 상태(현재 보고 있는
@@ -202,17 +226,37 @@ const isAiUsagePage = /^\/projects\/[^/]+\/ai-usage\/?$/.test(pathname);
     // 단, 홈 화면에서는 이 복원을 건너뛴다 — 프로젝트 페이지를 보다가 홈으로
     // 돌아왔을 때 예전에 펼쳐뒀던 상태가 되살아나 트리가 펼쳐진 채로 보이는
     // 것을 막고, 서버 기본값(전부 접힘)을 그대로 유지하기 위해서다.
-    document.querySelectorAll('details[data-nav-key]').forEach(function (details) {
-      var key = STORAGE_PREFIX + details.dataset.navKey;
-      if (!isHome) {
-        var stored = null;
-        try {
-          stored = localStorage.getItem(key);
-        } catch (_) {}
-        if (stored !== null) {
-          details.open = stored === '1';
+    // 프로젝트 목록 허브 페이지에서도 마찬가지 이유로 "portfolio" 자신을 뺀
+    // 나머지(프로젝트별 details)는 복원을 건너뛴다 — 그렇지 않으면 예전에 봤던
+    // 프로젝트 상세 페이지의 펼침 상태가 되살아나 Portfolio를 눌렀을 때 모든
+    // 프로젝트 토글이 함께 펼쳐지는 문제가 생긴다.
+    // 마찬가지로 어떤 프로젝트 상세를 보고 있을 때, "다른" 프로젝트의
+    // project:* 키도 복원을 건너뛴다 — 안 그러면 예전에 그 다른 프로젝트를
+    // 봤을 때 저장된 펼침 상태가 되살아나, 지금 보는 프로젝트를 열었는데 다른
+    // 프로젝트 토글까지 함께 펼쳐지는 문제가 생긴다. 다만 carryOpen 스냅샷에
+    // 해당 키가 있으면(직전 화면에서 실제로 펼쳐뒀던 것이면) 그 값을 최우선으로
+    // 따른다.
+    detailsList.forEach(function (details) {
+      var navKey = details.dataset.navKey;
+      var key = STORAGE_PREFIX + navKey;
+
+      if (carryOpen && Object.prototype.hasOwnProperty.call(carryOpen, navKey)) {
+        details.open = !!carryOpen[navKey];
+      } else {
+        var isOtherProjectKey =
+          navKey.indexOf('project:') === 0 && navKey !== 'project:' + currentProjectId;
+        var skipRestore = isHome || (isProjectsHub && navKey !== 'portfolio') || isOtherProjectKey;
+        if (!skipRestore) {
+          var stored = null;
+          try {
+            stored = localStorage.getItem(key);
+          } catch (_) {}
+          if (stored !== null) {
+            details.open = stored === '1';
+          }
         }
       }
+
       details.addEventListener('toggle', function () {
         try {
           localStorage.setItem(key, details.open ? '1' : '0');
@@ -220,16 +264,29 @@ const isAiUsagePage = /^\/projects\/[^/]+\/ai-usage\/?$/.test(pathname);
       });
     });
 
+    // 페이지를 떠나기 직전, 지금 화면에 실제로 펼쳐져 있는 details 상태를
+    // sessionStorage에 스냅샷으로 남겨서 다음 페이지가 한 번만 이어받게 한다.
+    window.addEventListener('pagehide', function () {
+      try {
+        var snapshot = {};
+        detailsList.forEach(function (d) {
+          snapshot[d.dataset.navKey] = d.open;
+        });
+        sessionStorage.setItem(CARRY_KEY, JSON.stringify(snapshot));
+      } catch (_) {}
+    });
+
     // summary(제목)를 클릭했을 때의 규칙은 Portfolio와 개별 프로젝트 항목이 동일하다.
-    // 화살표(.nav-marker-toggle)가 접기/펼치기를 전담하므로, 제목 텍스트는 펼침
-    // 상태와 무관하게 항상 이동을 담당한다 — 이미 펼쳐진 채로 열리는 하위 페이지
-    // (프로젝트 상세, 트러블슈팅 사례 등)에서도 제목을 클릭하면 상단(Portfolio는
-    // 전체 프로젝트 목록 페이지, 프로젝트 항목은 해당 프로젝트 페이지)으로
-    // 이동해야 하기 때문이다. 닫힌 상태라면 펼치면서 함께 이동한다.
+    // 이미 펼쳐진 상태에서 제목을 클릭하면: 이동 대상이 "지금 보고 있는 페이지
+    // 자기 자신"이면 접기만 하고(화살표와 동일하게 동작), 그게 아니라 실제로
+    // 다른 문서로 가야 하는 경우(예: 프로젝트 상세를 보다가 Portfolio를 클릭해
+    // 전체 목록으로 돌아가는 경우)에는 그대로 이동한다. 닫힌 상태라면 펼치면서
+    // 함께 이동한다.
     // (과거에는 Portfolio만 화살표가 없어 제목 클릭이 접기/펼치기를 겸했는데, 그
     // 결과 이미 펼쳐진 Portfolio를 클릭하면 접기만 하고 #projects로 이동하지 않는
-    // 버그가 있었다. 이제는 Portfolio도 다른 항목과 동일하게 화살표를 갖고
-    // 접기/펼치기를 전담시키므로 별도 취급이 필요 없다.)
+    // 버그가 있었다. 지금은 "자기 자신 페이지일 때만 접기"로 조건을 좁혀서, 실제로
+    // 이동해야 하는 클릭은 항상 이동을 보장하면서도 같은 페이지를 가리키는 클릭은
+    // 접기로 처리한다.)
     //
     // "펼치는 클릭"의 이동 대상이 실제로 다른 문서로 가는 경우(다른 URL, 혹은
     // 현재 페이지와 같은 URL이라도 전체 새로고침이 일어나는 경우)에는 네이티브
@@ -238,6 +295,10 @@ const isAiUsagePage = /^\/projects\/[^/]+\/ai-usage\/?$/.test(pathname);
     // 페이지에서 이전에 저장된 "닫힘" 값을 그대로 읽어와 다시 접힌 채로 렌더링되는
     // 문제가 생긴다. 그래서 details.open과 localStorage를 클릭 시점에 직접
     // 동기적으로 기록해준다.
+    function withTrailingSlash(path) {
+      return path.charAt(path.length - 1) === '/' ? path : path + '/';
+    }
+
     document.querySelectorAll('summary[data-nav-href]').forEach(function (summary) {
       var details = summary.parentElement;
       var toggle = summary.querySelector('.nav-marker-toggle');
@@ -251,9 +312,18 @@ const isAiUsagePage = /^\/projects\/[^/]+\/ai-usage\/?$/.test(pathname);
       }
 
       summary.addEventListener('click', function (event) {
+        var isSelfPage =
+          withTrailingSlash(window.location.pathname) === withTrailingSlash(summary.dataset.navHref);
         if (details && details.open) {
-          // 화살표가 접기를 전담하므로, 펼쳐진 상태에서 제목을 클릭해도 접지 않고
-          // 항상 이동한다(네이티브 토글로 인한 접힘은 막는다).
+          if (isSelfPage) {
+            // 지금 보고 있는 페이지 자신을 가리키는 상태로 펼쳐져 있으면, 이동
+            // 대신 화살표와 동일하게 접기만 한다.
+            event.preventDefault();
+            details.open = false;
+            return;
+          }
+          // 다른 문서로 이동해야 하는 클릭은 접지 않고 항상 이동한다(네이티브
+          // 토글로 인한 접힘은 막는다).
           event.preventDefault();
           window.location.href = summary.dataset.navHref;
           return;
