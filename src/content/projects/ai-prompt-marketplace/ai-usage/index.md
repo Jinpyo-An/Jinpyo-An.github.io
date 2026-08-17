@@ -13,7 +13,7 @@ AI 도구는 소극적으로 곁들여 쓰는 보조 수단이 아니라 적극�
 트러블슈팅 사례로 남긴 4건의 설계 결정 모두 Claude Code와 논의하며 만들었습니다.
 
 - [결제 게이트웨이 호출 장애 전파를 막기 위한 회복성 계층 도입](/projects/ai-prompt-marketplace/troubleshooting/toss-payment-resilience-layers/)
-- [상품 단위 부분환불을 위해 환불 처리 주체를 결제 서비스에서 주문 서비스로 재설계](/projects/ai-prompt-marketplace/troubleshooting/refund-request-payment-to-order/)
+- [상품 단위 부분환불을 위해 환불 처리 주체를 결제 서비스에서 주문 서비스로 전환](/projects/ai-prompt-marketplace/troubleshooting/refund-request-payment-to-order/)
 - [결제 시 주문 금액·구매자 검증 데이터를 로컬 캐시에서 gRPC 직접조회로 재설계](/projects/ai-prompt-marketplace/troubleshooting/order-verification-cache-to-grpc/)
 - [서비스 간 결합·장애 전파를 줄이기 위해 화면 데이터 조합 책임을 백엔드에서 프론트로 재설계](/projects/ai-prompt-marketplace/troubleshooting/page-composition-frontend-migration/)
 
