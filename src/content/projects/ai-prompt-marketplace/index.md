@@ -28,7 +28,7 @@ implementationHighlights:
   - 'AI 기반 상품 자동검수 파이프라인 구현 — Kafka 이벤트 소비 기반, Vision 멀티모달로 텍스트·이미지 함께 판정'
 troubleshootingHighlights:
   - 'page-composition-frontend-migration'
-  - 'refund-rest-to-event-redesign'
+  - 'refund-request-payment-to-order'
   - 'toss-payment-resilience-layers'
   - 'order-verification-cache-to-grpc'
 ---
