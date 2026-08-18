@@ -49,7 +49,7 @@ export const profile = {
           text: "'소중한 SW 기초 교육 특강: 라즈베리파이' 보조 강사",
         },
         {
-          text: "졸업 작품 '가전제품 관리 서비스' 단독 제작 및 전시회 출품",
+          text: "졸업 작품 '가전제품 관리 서비스' 제작 및 전시회 출품",
           link: 'https://github.com/Jinpyo-An/item-manager',
           linkLabel: 'GitHub ↗',
         },

@@ -22,8 +22,8 @@ frontendGithubUrl: 'https://github.com/prgrms-be-adv-devcourse/beadv6_6_3JMT_FE'
 # demoUrl: 'https://example.com'
 role: '5인 팀(BE5, FE 공통) | 결제·AI 도메인 백엔드 개발'
 implementationHighlights:
-  - '결제 승인 API 구현 - 멱등키 검증·주문 서비스 금액 대조·Resilience4j 기반 장애 대응으로 중복 결제·금액 위변조·PG 장애 방어'
-  - '부분 환불 기능 구현 - Kafka 이벤트 구독 기반 비동기 트리거로 처리하고, 누적 환불액을 검증해 과환불 방지'
+  - '결제 승인 API 구현 - 멱등키 검증·주문 금액 대조·Resilience4j 장애 대응으로 중복 결제·금액 위변조·PG 장애 방어'
+  - '부분 환불 기능 구현 - Kafka 이벤트 기반 비동기 트리거로 처리하고, 누적 환불액을 검증해 과환불 방지'
   - '결제·환불 감사 로그 구현 - 상태 전이를 감사 테이블에 기록하고, Elasticsearch에 미러링해 Kibana에서 조회·분석 가능하도록 구성'
   - 'AI 기반 상품 자동검수 파이프라인 구현 - Vision 멀티모달로 텍스트·이미지를 검수하고, 프롬프트 품질 체크리스트를 함께 제공'
 troubleshootingHighlights:

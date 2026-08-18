@@ -1,7 +1,7 @@
 ---
 title: '공연 예매 서비스'
 period: '2025.05 - 2025.12'
-summary: '보고싶은 공연의 좌석을 예매하고 QR 티켓을 발급받는 예매 서비스'
+summary: '공연의 좌석을 예매하고 QR 티켓을 발급받는 예매 서비스'
 techStack:
   - 'Java 21'
   - 'Spring Boot 3'
@@ -18,9 +18,9 @@ githubUrl: 'https://github.com/next-frame-lab/api-server'
 # demoUrl: 'https://example.com'
 role: '4인 팀(BE2, FE2) | 인증·예매 도메인 백엔드 개발'
 implementationHighlights:
-  - '소셜 로그인 및 인증/인가 체계 구축 — 카카오 소셜 로그인과 JWT 기반 토큰 발급/재발급 구현, 서버 측 로그아웃(토큰 무효화) 처리'
-  - '공연/좌석/리뷰 도메인 API 설계 및 구현 — 공연 조회, 좌석 배치·상태 조회, 리뷰 작성·좋아요 등 핵심 도메인 API 설계 및 구현'
-  - 'QueryDSL 기반 쿼리 구조 개선 — 복잡한 JPQL을 QueryDSL Custom Repository로 전환, 공연 조회 쿼리 방식 통일 및 공통 메서드 추출'
+  - '소셜 로그인 및 인증/인가 체계 구축 - 카카오 소셜 로그인과 JWT 기반 토큰 발급/재발급 구현, 서버 측 로그아웃(토큰 무효화) 처리'
+  - '공연/좌석/리뷰 도메인 API 설계 및 구현 - 공연 조회, 좌석 배치·상태 조회, 리뷰 작성·좋아요 등 핵심 도메인 API 설계 및 구현'
+  - '복잡한 JPQL을 QueryDSL로 전환 - 문자열 기반 쿼리를 타입 세이프한 코드로 전환해 컴파일 시점에 오류 검출 가능하도록 개선'
 troubleshootingHighlights:
   - 'redis-distributed-lock'
   - 'reservation-expiry-optimistic-lock'
