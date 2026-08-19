@@ -70,12 +70,12 @@ function resolveTroubleshootingHighlights(projectId: string, slugs: string[] | u
   >
     {
       profile.intro.map((paragraph) => {
-        const text = typeof paragraph === 'string' ? paragraph : paragraph.text;
-        const link = typeof paragraph === 'string' ? undefined : paragraph.link;
-        const linkLabel = typeof paragraph === 'string' ? undefined : paragraph.linkLabel;
+        const segments = Array.isArray(paragraph) ? paragraph : paragraph.segments;
+        const link = Array.isArray(paragraph) ? undefined : paragraph.link;
+        const linkLabel = Array.isArray(paragraph) ? undefined : paragraph.linkLabel;
         return (
           <p>
-            {text}
+            {segments.map((segment) => (typeof segment === 'string' ? segment : <strong>{segment.bold}</strong>))}
             {link && (
               <>
                 {' '}
