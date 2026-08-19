@@ -68,7 +68,29 @@ function resolveTroubleshootingHighlights(projectId: string, slugs: string[] | u
   <div
     class="mt-10 print:mt-4 space-y-4 print:space-y-1.5 text-[15px] leading-[1.8] print:leading-[1.45] text-[var(--color-ink)]"
   >
-    {profile.intro.map((paragraph) => <p>{paragraph}</p>)}
+    {
+      profile.intro.map((paragraph) => {
+        const text = typeof paragraph === 'string' ? paragraph : paragraph.text;
+        const link = typeof paragraph === 'string' ? undefined : paragraph.link;
+        const linkLabel = typeof paragraph === 'string' ? undefined : paragraph.linkLabel;
+        return (
+          <p>
+            {text}
+            {link && (
+              <>
+                {' '}
+                <a
+                  href={link}
+                  class="text-[13px] text-[var(--color-ink-subtle)] hover:text-[var(--color-accent)] transition-colors"
+                >
+                  {linkLabel ?? '문서 보기 ↗'}
+                </a>
+              </>
+            )}
+          </p>
+        );
+      })
+    }
   </div>
 
   <Section title="Projects" id="projects">
