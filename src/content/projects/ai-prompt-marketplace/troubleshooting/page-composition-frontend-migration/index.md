@@ -41,6 +41,8 @@ flowchart TB
         PRD2 -.->|"독립 섹션으로 렌더링"| FE2
         SEL2 -.->|"독립 섹션으로 렌더링"| FE2
     end
+
+    BEFORE ~~~ AFTER
 ```
 
 ## 문제 해결 과정
