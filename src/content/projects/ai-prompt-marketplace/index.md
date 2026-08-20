@@ -27,9 +27,9 @@ implementationHighlights:
   - '결제·환불 감사 로그 구현 - 상태 전이를 감사 테이블에 기록하고, Elasticsearch에 미러링해 Kibana에서 조회·분석 가능하도록 구성'
   - 'AI 기반 상품 자동검수 파이프라인 구현 - Vision 멀티모달로 텍스트·이미지를 검수하고, 프롬프트 품질 체크리스트를 함께 제공'
 troubleshootingHighlights:
+  - 'toss-payment-resilience-layers'
   - 'page-composition-frontend-migration'
   - 'refund-request-payment-to-order'
-  - 'toss-payment-resilience-layers'
   - 'order-verification-cache-to-grpc'
 ---
 
