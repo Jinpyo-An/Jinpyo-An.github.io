@@ -7,6 +7,7 @@ import { profile } from '../data/profile';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const troubleshootingEntries = await getCollection('troubleshooting');
+const aiUsageEntries = await getCollection('aiUsage');
 const printName = `${profile.name}_이력서`;
 
 // 프로젝트 카드의 "문제 해결" 불릿에 쓸 트러블슈팅 케이스를, frontmatter의
@@ -23,6 +24,14 @@ function resolveTroubleshootingHighlights(projectId: string, slugs: string[] | u
       title: entry!.data.title,
       href: `/projects/${projectId}/troubleshooting/${slug}/`,
     }));
+}
+
+// 프로젝트 카드의 "AI 활용" 불릿에 쓸 문서를, aiUsage 컬렉션에서 프로젝트 id로 찾아
+// 제목·링크로 변환한다. 프로젝트당 최대 1개 문서만 존재하는 것을 전제로 한다.
+function resolveAiUsageHighlight(projectId: string) {
+  const entry = aiUsageEntries.find((entry) => entry.id === projectId);
+  if (!entry) return undefined;
+  return { title: entry.data.title, href: `/projects/${projectId}/ai-usage/` };
 }
 ---
 
@@ -114,6 +123,7 @@ function resolveTroubleshootingHighlights(projectId: string, slugs: string[] | u
             project.id,
             project.data.troubleshootingHighlights
           )}
+          aiUsageHighlight={resolveAiUsageHighlight(project.id)}
         />
       ))
     }

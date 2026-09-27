@@ -7,6 +7,7 @@ interface Props {
   techStack: string[];
   implementationHighlights?: string[];
   troubleshootingHighlights?: { title: string; href: string }[];
+  aiUsageHighlight?: { title: string; href: string };
 }
 const {
   title,
@@ -16,6 +17,7 @@ const {
   techStack,
   implementationHighlights,
   troubleshootingHighlights,
+  aiUsageHighlight,
 } = Astro.props;
 
 const summaryParagraphs = summary
@@ -82,6 +84,25 @@ const summaryParagraphs = summary
               </a>
             </li>
           ))}
+        </ul>
+      </div>
+    )
+  }
+  {
+    aiUsageHighlight && (
+      <div class="mb-2 print:mb-1">
+        <p class="text-[12.5px] font-semibold text-[var(--color-ink-subtle)] mb-1">AI 활용</p>
+        <ul class="space-y-1 print:space-y-0.5 pl-4 list-disc marker:text-[var(--color-ink-subtle)]">
+          <li class="text-[13px] text-[var(--color-ink)]">
+            {aiUsageHighlight.title}
+            {' · '}
+            <a
+              href={aiUsageHighlight.href}
+              class="text-[var(--color-ink-subtle)] hover:text-[var(--color-accent)] transition-colors"
+            >
+              문서 보기 ↗
+            </a>
+          </li>
         </ul>
       </div>
     )
