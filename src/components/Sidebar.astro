@@ -101,7 +101,9 @@ const isAiUsagePage = /^\/projects\/[^/]+\/ai-usage\/?$/.test(pathname);
                         )}
                         {aiUsage && (
                           <>
-                            <li class="nav-tree-divider" aria-hidden="true"></li>
+                            <li class="nav-tree-divider" aria-hidden="true">
+                              AI 활용
+                            </li>
                             <li>
                               <a
                                 href={`/projects/${project.id}/ai-usage/`}
