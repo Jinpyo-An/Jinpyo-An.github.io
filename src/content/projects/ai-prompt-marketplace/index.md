@@ -30,7 +30,7 @@ troubleshootingHighlights:
   - 'toss-payment-resilience-layers'
   - 'page-composition-frontend-migration'
   - 'refund-request-payment-to-order'
-  - 'order-verification-cache-to-grpc'
+  - 'payment-verification-design'
 ---
 
 ## 서비스 설명
