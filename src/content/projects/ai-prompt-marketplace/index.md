@@ -52,6 +52,46 @@ AI 프롬프트를 상품으로 등록하고 사고팔 수 있는 마켓플레�
 | 외부 연동 | Toss Payments, OpenAI |
 | 관측성 | Fluent Bit, Logstash, Elasticsearch, Kibana |
 
+<div class="image-row">
+
+<figure>
+
+![상품 목록](./product-list-page.png)
+
+<figcaption>상품 목록</figcaption>
+
+</figure>
+
+<figure>
+
+![상품 상세](./product-detail-page.png)
+
+<figcaption>상품 상세</figcaption>
+
+</figure>
+
+</div>
+
+<div class="image-row">
+
+<figure>
+
+![주문 내역](./order-history-page.png)
+
+<figcaption>주문 내역</figcaption>
+
+</figure>
+
+<figure>
+
+![관리자 상품 검수](./admin-review-page.png)
+
+<figcaption>관리자 상품 검수</figcaption>
+
+</figure>
+
+</div>
+
 ## 서비스 구조
 
 전체 시스템을 User/Product/Order/Payment/Admin/AI/Notification/Settlement 8개 도메인별 마이크로서비스로 분리하고, Kubernetes 위에서 게이트웨이·서비스 디스커버리·설정 관리를 중앙화해 각 서비스가 독립적으로 배포·확장될 수 있도록 구성했습니다.
